@@ -6,21 +6,22 @@
 
 ## Overview
 
-AlmaTies serves as a digital touchpoint for alumni to:
+**AlmaTies** serves as a digital touchpoint for:
 
+### Alumni to:
 - Reconnect with fellow graduates  
 - Engage in thoughtful discussions  
 - Celebrate shared journeys and achievements  
 
-The platform maintains a consistent aesthetic with a soft white-themed blurred background and a nostalgic visual overlay using a shared background image.
+### Students to:
+- Build meaningful connections with alumni  
+- Seek mentorship and career guidance  
+- Explore opportunities, insights, and shared experiences beyond the classroom  
 
----
+## Features
 
-## Key Features
-
-- **Forum Integration:** Seamless discussion experience
-- **One-on-One Chat:** Personalized communication for deeper, private conversations
-- **Profile Cards:** Beautifully designed cards to showcase profiles of both students and alumni
-
-
+- One-on-One Chat  
+- Profile Cards for Students & Alumni  
+- Community Forum for open discussions  
+- Elegant, minimal UI  
 
