@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Almaties</title>
+    <style>
+        /* Reset & Font */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: url('alum.jpeg') no-repeat center center/cover;
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-name {
+            margin-right: 15px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: black;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Dashboard Content */
+        .dashboard-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .welcome-section {
+            margin-bottom: 50px;
+        }
+
+        .welcome-section h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .welcome-section p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Grid */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .nav-card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .nav-card h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .nav-card p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2 class="logo" onclick="window.location.href='index.html'">Almaties</h2>
+        <div class="user-profile">
+            <div class="profile-pic">U</div>
+            <div class="user-name">User</div>
+            <button class="logout-btn" onclick="window.location.href='index.html'">LOGOUT</button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="overlay"></div>
+        
+        <div class="dashboard-container">
+            <div class="welcome-section">
+                <h1>Welcome to Your Dashboard</h1>
+                <p>“Connection is the heart of growth.”
+                    This platform isn’t just about networking — it’s about building a legacy.
+                    Engage in meaningful conversations, discover new perspectives, and leave a lasting impact.</p>
+            </div>
+            
+            <div class="nav-grid">
+                <div class="nav-card" onclick="window.location.href='profile.html'">
+                    <div class="nav-icon">👤</div>
+                    <h3>Profile</h3>
+                    <p>View and edit your personal profile information</p>
+                </div>
+                
+                <div class="nav-card" onclick="window.location.href='community.html'">
+                    <div class="nav-icon">👥</div>
+                    <h3>Community Forum</h3>
+                    <p>Join discussions with students and alumni</p>
+                </div>
+                
+                <div class="nav-card" onclick="window.location.href='alumni.html'">
+                    <div class="nav-icon">🎓</div>
+                    <h3>Alumni</h3>
+                    <p>Connect with graduates from your institution</p>
+                </div>
+                
+                <div class="nav-card" onclick="window.location.href='students.html'">
+                    <div class="nav-icon">📚</div>
+                    <h3>Students</h3>
+                    <p>Connect with current students</p>
+                </div>
+                
+                <div class="nav-card" onclick="window.location.href='chat.html'">
+                    <div class="nav-icon">💬</div>
+                    <h3>Chat</h3>
+                    <p>Direct messaging with members</p>
+                </div>
+                
+                <div class="nav-card" onclick="window.location.href='settings.html'">
+                    <div class="nav-icon">⚙️</div>
+                    <h3>Settings</h3>
+                    <p>Manage your account preferences</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
