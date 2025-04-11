@@ -198,14 +198,16 @@
           const card = document.createElement('div');
           card.className = 'card';
           card.innerHTML = `
-            <img src="${imageSrc}" alt="Avatar">
-            <div class="card-details">
-              <strong>${a.fullName}</strong><br>
-              Batch: ${a.batch}<br>
-              Company: ${a.company}<br>
-              <a href="${a.linkedin}" target="_blank">LinkedIn</a>
-            </div>
-          `;
+  <a href="dm.html?name=${encodeURIComponent(a.fullName)}" style="display: flex; align-items: center; gap: 30px; text-decoration: none; color: inherit;">
+    <img src="${imageSrc}" alt="Avatar">
+    <div class="card-details">
+      <strong>${a.fullName}</strong><br>
+      Batch: ${a.batch}<br>
+      Company: ${a.company}<br>
+      <span style="color: #ff7ea8; font-weight: 500;">Chat Now</span>
+    </div>
+  </a>
+`;
           cardsContainer.appendChild(card);
         }
       });
