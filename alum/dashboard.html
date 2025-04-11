@@ -5,163 +5,197 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlmaTies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
-        /* Reset & Font */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap');
 
-        body {
-            background: url('alum.jpeg') no-repeat center center/cover;
-            min-height: 100vh;
-            color: white;
-            display: flex;
-            flex-direction: column;
-        }
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-        }
+body {
+  background: url('alum.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  color: #111827;
+  display: flex;
+  flex-direction: column;
+}
 
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 60px;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 10;
+}
 
-        .user-profile {
-            display: flex;
-            align-items: center;
-        }
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 2rem;
+  color: #ec4899;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
 
-        .profile-pic {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            margin-right: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
+/* User Profile Section */
+.user-profile {
+  display: flex;
+  align-items: center;
+}
 
-        .user-name {
-            margin-right: 15px;
-        }
+.profile-pic {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #111827;
+}
 
-        .logout-btn {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-            padding: 8px 15px;
-            cursor: pointer;
-            border-radius: 20px;
-        }
+.user-name {
+  margin-right: 15px;
+  font-size: 14px;
+  color: #374151;
+}
 
-        .logout-btn:hover {
-            background: white;
-            color: black;
-        }
+.logout-btn {
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  color: #111827;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
 
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 40px 20px;
-        }
+.logout-btn:hover {
+  background: #ec4899;
+  color: #fff;
+}
 
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-        }
+/* Main Dashboard Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 60px 20px;
+}
 
-        /* Dashboard Content */
-        .dashboard-container {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 900px;
-            text-align: center;
-        }
+.main-content .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  z-index: 0;
+}
 
-        .welcome-section {
-            margin-bottom: 50px;
-        }
+/* Dashboard Container */
+.dashboard-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  width: 100%;
+  text-align: center;
+  padding: 40px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
 
-        .welcome-section h1 {
-            font-size: 32px;
-            margin-bottom: 15px;
-        }
+/* Welcome Section */
+.welcome-section h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #111827;
+}
 
-        .welcome-section p {
-            font-size: 16px;
-            opacity: 0.9;
-            line-height: 1.6;
-            max-width: 700px;
-            margin: 0 auto;
-        }
+.welcome-section p {
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
 
-        /* Navigation Grid */
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
+/* Navigation Cards Grid */
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
+}
 
-        .nav-card {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+/* Nav Card Styles */
+.nav-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
-        .nav-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
+.nav-card:hover {
+  background: #ec4899;
+  color: #fff;
+  transform: translateY(-5px);
+}
 
-        .nav-icon {
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
+.nav-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
 
-        .nav-card h3 {
-            margin-bottom: 10px;
-            font-size: 20px;
-        }
-
-        .nav-card p {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-    </style>
+.nav-card p {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+.nav-card:hover p {
+  color: #fff;
+}
+.user-icon {
+  font-size: 40px;
+  color: #374151;
+  margin-right: 15px;
+}
+      </style>
+      
+    
 </head>
 <body>
     <header>
-        <h2 class="logo" onclick="window.location.href='index.html'">Almaties</h2>
+        <h2 class="logo" onclick="window.location.href='index.html'">AlmaTies</h2>
         <div class="user-profile">
-            <div class="profile-pic">U</div>
-            <div class="user-name">User</div>
+            <!-- <div class="profile-pic">U</div> -->
+            <i class="fas fa-user-circle user-icon"></i> <!-- 👈 Profile icon here -->
             <button class="logout-btn" onclick="window.location.href='index.html'">LOGOUT</button>
         </div>
     </header>
@@ -178,17 +212,13 @@
             </div>
             
             <div class="nav-grid">
-                <div class="nav-card" onclick="window.location.href='profile.html'">
+                <!-- <div class="nav-card" onclick="window.location.href='profile.html'">
                     <div class="nav-icon">👤</div>
                     <h3>Profile</h3>
                     <p>View and edit your personal profile information</p>
-                </div>
+                </div> -->
                 
-                <div class="nav-card" onclick="window.location.href='forum.html'">
-                    <div class="nav-icon">👥</div>
-                    <h3>Community Forum</h3>
-                    <p>Join discussions with students and alumni</p>
-                </div>
+                
                 
                 <div class="nav-card" onclick="window.location.href='alumni.html'">
                     <div class="nav-icon">🎓</div>
@@ -207,12 +237,14 @@
                     <h3>Chat</h3>
                     <p>Direct messaging with members</p>
                 </div>
-                
-                <div class="nav-card" onclick="window.location.href='settings.html'">
-                    <div class="nav-icon">⚙️</div>
-                    <h3>Settings</h3>
-                    <p>Manage your account preferences</p>
+
+                <div class="nav-card" onclick="window.location.href='forum.html'">
+                    <div class="nav-icon">👥</div>
+                    <h3>Community Forum</h3>
+                    <p>Join discussions with students and alumni</p>
                 </div>
+                
+                
             </div>
         </div>
     </div>

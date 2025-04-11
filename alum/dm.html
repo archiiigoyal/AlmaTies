@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Direct Message | SheCircle</title>
@@ -68,32 +69,54 @@
 
     .chat-box {
       flex: 1;
-      padding: 1.5rem;
+      padding: 1.2rem;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 10px;
+    }
+
+    .chat-box::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chat-box::-webkit-scrollbar-thumb {
+      background: rgba(150, 150, 150, 0.4);
+      border-radius: 4px;
     }
 
     .message {
       max-width: 70%;
-      padding: 0.8rem 1.2rem;
-      border-radius: 18px;
-      font-size: 1rem;
+      padding: 0.7rem 1rem;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      animation: fadeInUp 0.3s ease;
       word-wrap: break-word;
-      line-height: 1.5;
     }
 
     .sent {
       align-self: flex-end;
-      background: rgba(255, 255, 255, 0.75);
-      color: #222;
+      background: rgba(255, 240, 245, 0.7);
+      /* subtle blush */
     }
 
     .received {
       align-self: flex-start;
       background: rgba(240, 240, 240, 0.8);
       color: #444;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .chat-input {
@@ -119,22 +142,22 @@
     }
 
     .chat-input button {
-      margin-left: 1rem;
-      padding: 0.75rem 1.5rem;
-      background: rgba(0, 0, 0, 0.1);
-      color: #333;
-      font-weight: 600;
+      padding: 0 1.2rem;
+      margin-left: 10px;
       border: none;
       border-radius: 24px;
+      background: #dcdcdc;
+      color: #444;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background 0.2s ease;
     }
 
     .chat-input button:hover {
-      background: rgba(0, 0, 0, 0.15);
+      background: #c8c8c8;
     }
   </style>
 </head>
+
 <body>
 
   <div class="chat-container">
@@ -144,8 +167,11 @@
     </div>
 
     <div class="chat-box" id="chatBox">
-      <div class="message received">Hi! How can I help you today?</div>
-      <div class="message sent">Hey! I wanted to know more about internships :)</div>
+      <div class="message sent">Hi di! I hope you're doing well. I wanted to ask you something about my upcoming
+        internship drive, if you don’t mind?</div>
+      <div class="message received">Hey! I’m so glad you reached out. Of course I don’t mind. Tell me, what’s going on?
+        How can I help?</div>
+
     </div>
 
     <div class="chat-input">
@@ -164,15 +190,34 @@
       const text = input.value.trim();
       if (text !== "") {
         const chatBox = document.getElementById("chatBox");
+
         const newMsg = document.createElement("div");
         newMsg.className = "message sent";
         newMsg.textContent = text;
         chatBox.appendChild(newMsg);
+
         input.value = "";
         chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Optional: simulate reply from the other person
+        setTimeout(() => {
+          const reply = document.createElement("div");
+          reply.className = "message received";
+          reply.textContent = "Thanks for your message! I'll get back to you soon.";
+          chatBox.appendChild(reply);
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }, 1200);
       }
     }
+
+    // Optional: Allow pressing Enter to send
+    document.getElementById("msgInput").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
   </script>
 
 </body>
+
 </html>

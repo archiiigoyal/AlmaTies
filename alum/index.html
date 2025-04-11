@@ -20,7 +20,7 @@
         <div class="overlay"></div>
         <div class="content">
             <p class="small-text">ALUMNUS PORTAL WITH PERFECT SPACE</p>
-            <h1>Connect Alumnus Share Knowledge</h1>
+            <h1><span class="typewriter-text"></span></h1>
             <p class="description">
                 Where past meets present, and stories spark new beginnings.
 Join a vibrant community of students and alumnae built on shared experiences, career journeys, and meaningful connections.
@@ -30,6 +30,50 @@ Whether you're looking to mentor, be mentored, collaborate, or simply stay conne
             <button class="cta" onclick="window.location.href='register.html'">GET STARTED</button>
         </div>
     </section>
+
+    <script>
+        const phrases = [
+          "Tied Together by Alma Mater",
+          "Reconnect. Reflect. Relive.",
+          "Spark Meaningful Conversations",
+          "Empower Through Experience",
+          "Build a Lifelong Network"
+        ];
+      
+        const el = document.querySelector(".typewriter-text");
+        let currentPhrase = 0;
+        let currentChar = 0;
+        let isDeleting = false;
+        let typingSpeed = 100;
+      
+        function type() {
+          const fullText = phrases[currentPhrase];
+          if (isDeleting) {
+            currentChar--;
+          } else {
+            currentChar++;
+          }
+      
+          el.textContent = fullText.substring(0, currentChar);
+      
+          if (!isDeleting && currentChar === fullText.length) {
+            isDeleting = true;
+            typingSpeed = 1500;
+          } else if (isDeleting && currentChar === 0) {
+            isDeleting = false;
+            currentPhrase = (currentPhrase + 1) % phrases.length;
+            typingSpeed = 200;
+          } else {
+            typingSpeed = isDeleting ? 50 : 100;
+          }
+      
+          setTimeout(type, typingSpeed);
+        }
+      
+        document.addEventListener("DOMContentLoaded", () => {
+          type();
+        });
+      </script>
 
 </body>
 </html>
