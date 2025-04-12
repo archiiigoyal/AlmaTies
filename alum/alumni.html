@@ -186,36 +186,52 @@
     ];
 
     function renderAlumni(filterKey = '', filterValue = '') {
-      const cardsContainer = document.getElementById('alumniCards');
-      cardsContainer.innerHTML = '';
-      let found = false;
+  const cardsContainer = document.getElementById('alumniCards');
+  cardsContainer.innerHTML = '';
+  let found = false;
 
-      alumni.forEach((a) => {
-        if (!filterKey || a[filterKey].toLowerCase().includes(filterValue.toLowerCase())) {
-          found = true;
-          const imageSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(a.fullName)}&background=random`;
+  alumni.forEach((a) => {
+    if (!filterKey || a[filterKey].toLowerCase().includes(filterValue.toLowerCase())) {
+      found = true;
+      const imageSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(a.fullName)}&background=random`;
 
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = `
-  <a href="dm.html?name=${encodeURIComponent(a.fullName)}" style="display: flex; align-items: center; gap: 30px; text-decoration: none; color: inherit;">
-    <img src="${imageSrc}" alt="Avatar">
-    <div class="card-details">
-      <strong>${a.fullName}</strong><br>
-      Batch: ${a.batch}<br>
-      Company: ${a.company}<br>
-      <span style="color: #ff7ea8; font-weight: 500;">Chat Now</span>
-    </div>
-  </a>
-`;
-          cardsContainer.appendChild(card);
-        }
-      });
+      const card = document.createElement('div');
+      card.className = 'card';
 
-      if (!found) {
-        cardsContainer.innerHTML = '<p class="no-results">No alumni found matching your search.</p>';
+      // Check if profile page exists
+      let profilePage = null;
+      if (a.fullName === "Aarushi Sharma") profilePage = "profiles/arushi.html";
+      if (a.fullName === "Meera Kapoor") profilePage = "profiles/meera.html";
+
+      // If there's a profile, make card clickable except for 'Chat Now'
+      if (profilePage) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          if (!e.target.closest('.chat-link')) {
+            window.location.href = profilePage;
+          }
+        });
       }
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 30px;">
+          <img src="${imageSrc}" alt="Avatar">
+          <div class="card-details">
+            <strong>${a.fullName}</strong><br>
+            Batch: ${a.batch}<br>
+            Company: ${a.company}<br>
+            <a href="dm.html?name=${encodeURIComponent(a.fullName)}" class="chat-link" style="color: #ff7ea8; font-weight: 500; text-decoration: none;">Chat Now</a>
+          </div>
+        </div>
+      `;
+      cardsContainer.appendChild(card);
     }
+  });
+
+  if (!found) {
+    cardsContainer.innerHTML = '<p class="no-results">No alumni found matching your search.</p>';
+  }
+}
 
     function applySearch() {
       const key = document.getElementById('searchCategory').value;
