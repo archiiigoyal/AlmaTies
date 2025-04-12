@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alumni Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #fbeaff, #f8efff);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px);
+      padding: 12px 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-bar input,
+    .search-bar select,
+    .search-bar button {
+      font-size: 16px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .search-bar input {
+      flex-grow: 1;
+      background: #fff;
+      border: 1px solid #ddd;
+    }
+
+    .search-bar select {
+      background-color: #fff;
+      border: 1px solid #ddd;
+    }
+
+    .search-bar button {
+      background: linear-gradient(to right, #ff91a4, #ffc3c3);
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background: linear-gradient(to right, #ff6785, #ffbaba);
+    }
+
+    .nav-card-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 35px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 180px;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffbdd6;
+  background-color: #fff;
+}
+
+.nav-card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+  gap: 30px;
+}
+
+
+    .card-details {
+      flex: 1;
+    }
+
+    .card-details strong {
+      font-size: 20px;
+      color: #ff5d8f;
+    }
+
+    .card a {
+      color: #ff7ea8;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .no-results {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      color: #ffb0c9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search alumni...">
+      <select id="searchCategory">
+        <option value="fullName">Name</option>
+        <option value="batch">Batch</option>
+        <option value="company">Company</option>
+      </select>
+      <button onclick="applySearch()">Search</button>
+    </div>
+
+    <div id="alumniCards" class="nav-card-wrapper"></div>
+  </div>
+
+  <script>
+    const alumni = [
+      {
+        fullName: "Aarushi Sharma",
+        batch: "2018",
+        company: "Google",
+        linkedin: "https://linkedin.com/in/aarushi"
+      },
+      {
+        fullName: "Meera Kapoor",
+        batch: "2019",
+        company: "Microsoft",
+        linkedin: "https://linkedin.com/in/meera"
+      },
+      {
+        fullName: "Diya Bansal",
+        batch: "2020",
+        company: "Amazon",
+        linkedin: "https://linkedin.com/in/diya"
+      },
+      {
+        fullName: "Nisha Verma",
+        batch: "2021",
+        company: "Meta",
+        linkedin: "https://linkedin.com/in/nisha"
+      },
+      {
+        fullName: "Riya Mehta",
+        batch: "2022",
+        company: "Adobe",
+        linkedin: "https://linkedin.com/in/riya"
+      },
+      {
+        fullName: "Ritika Desai",
+        batch: "2024",
+        company: "Adobe",
+        linkedin: "https://linkedin.com/in/ritikadesai"
+      }
+    ];
+
+    function renderAlumni(filterKey = '', filterValue = '') {
+  const cardsContainer = document.getElementById('alumniCards');
+  cardsContainer.innerHTML = '';
+  let found = false;
+
+  alumni.forEach((a) => {
+    if (!filterKey || a[filterKey].toLowerCase().includes(filterValue.toLowerCase())) {
+      found = true;
+      const imageSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(a.fullName)}&background=random`;
+
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      // Check if profile page exists
+      let profilePage = null;
+      if (a.fullName === "Aarushi Sharma") profilePage = "profiles/arushi.html";
+      if (a.fullName === "Meera Kapoor") profilePage = "profiles/meera.html";
+
+      // If there's a profile, make card clickable except for 'Chat Now'
+      if (profilePage) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          if (!e.target.closest('.chat-link')) {
+            window.location.href = profilePage;
+          }
+        });
+      }
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 30px;">
+          <img src="${imageSrc}" alt="Avatar">
+          <div class="card-details">
+            <strong>${a.fullName}</strong><br>
+            Batch: ${a.batch}<br>
+            Company: ${a.company}<br>
+            <a href="dm.html?name=${encodeURIComponent(a.fullName)}" class="chat-link" style="color: #ff7ea8; font-weight: 500; text-decoration: none;">Chat Now</a>
+          </div>
+        </div>
+      `;
+      cardsContainer.appendChild(card);
+    }
+  });
+
+  if (!found) {
+    cardsContainer.innerHTML = '<p class="no-results">No alumni found matching your search.</p>';
+  }
+}
+
+    function applySearch() {
+      const key = document.getElementById('searchCategory').value;
+      const value = document.getElementById('searchInput').value;
+      renderAlumni(key, value);
+    }
+
+    renderAlumni();
+  </script>
+</body>
+</html>
+
