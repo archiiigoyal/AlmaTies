@@ -1,123 +1,433 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>The SheCircle | Community Forum</title>
-  <script async src="https://talk.hyvor.com/embed/embed.js" type="module"></script>
-  <style>
-    /* Reset & Base */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      position: relative;
-      color: #333;
-      background: linear-gradient(
-          to bottom right,
-          rgba(255, 220, 240, 0.6),
-          rgba(220, 235, 255, 0.6)
-        ),
-        url('alum/alum.jpeg') no-repeat center center fixed;
-      background-size: cover;
-    }
-
-    /* Soft light glow over the background */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.7) 10%,
-        rgba(255, 255, 255, 0.5) 100%
-      );
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 0;
-    }
-
-    /* Container Glassmorphic Panels */
-    header, main {
-      position: relative;
-      z-index: 1;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-      border-radius: 24px;
-      margin: 2rem auto;
-      max-width: 880px;
-      padding: 2rem;
-      transition: all 0.3s ease;
-    }
-
-    header {
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 3rem;
-      color: #ff5f9e;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-shadow: 0 2px 4px rgba(255, 105, 135, 0.15);
-    }
-
-    .description {
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      color: #666;
-      font-style: italic;
-    }
-
-    main {
-      margin-top: 1.5rem;
-      padding: 2rem 2.5rem;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2.2rem;
+<html lang="en" class="transition duration-500">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The SheCircle | Community Forum</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
       }
 
-      .description {
+      body {
+        transition: background 0.5s ease, color 0.5s ease;
+        background: var(--bg);
+        color: var(--text);
+        padding: 2rem;
+      }
+
+      :root {
+        --bg: #f5f8ff;
+        --text: #333;
+        --card-bg: #ffffff;
+        --card-shadow: rgba(79, 70, 229, 0.05);
+        --accent: #4f46e5;
+        --accent-dark: #4338ca;
+        --reply-bg: #f0f0f0;
+      }
+
+      .dark {
+        --bg: #0f172a;
+        --text: #e2e8f0;
+        --card-bg: #1e293b;
+        --card-shadow: rgba(148, 163, 184, 0.08);
+        --accent: #818cf8;
+        --accent-dark: #6366f1;
+        --reply-bg: #334155;
+      }
+
+      .fade-out {
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      .forum-container {
+        max-width: 880px;
+        margin: 0 auto;
+        background: var(--card-bg);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 6px 30px var(--card-shadow);
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 2.8rem;
+        font-family: "Pacifico", cursive;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .subheading {
+        text-align: center;
         font-size: 1rem;
+        color: #777;
+        margin-bottom: 2rem;
       }
 
-      main {
-        margin: 1rem;
-        padding: 1.2rem;
+      .comment-form {
+        margin-bottom: 2rem;
       }
-    }
 
-    /* Transitions */
-    body, header, main {
-      transition: all 0.4s ease-in-out;
-    }
-  </style>
-</head>
-<body>
+      textarea {
+        width: 100%;
+        padding: 1rem;
+        border-radius: 12px;
+        border: 1px solid #ccc;
+        resize: vertical;
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+        transition: border 0.3s ease;
+        background: var(--card-bg);
+        color: var(--text);
+      }
 
-  <header>
-    <h1>The SheCircle</h1>
-    <p class="description">
-      You’ve never truly left,<br> because this circle always brings you back.
-    </p>
-  </header>
+      textarea:focus {
+        border-color: var(--accent);
+        outline: none;
+      }
 
-  <main>
-    <hyvor-talk-comments
-      website-id="13038"
-      page-id="alumni-forum">
-    </hyvor-talk-comments>
-  </main>
+      button {
+        padding: 0.6rem 1.5rem;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 24px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
 
-</body>
+      button:hover {
+        background: var(--accent-dark);
+      }
+
+      .comment-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 10px var(--card-shadow);
+        transition: background 0.2s ease;
+      }
+
+      .comment-header {
+        font-weight: 600;
+        color: var(--accent);
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .comment-message {
+        color: var(--text);
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .comment-meta {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
+      .comment-count {
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: var(--accent);
+      }
+
+      .liked {
+        font-weight: bold;
+        color: var(--accent);
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .reply-card {
+        background: var(--reply-bg);
+      }
+    </style>
+    <script>
+      // On load: apply theme class
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+  </head>
+
+  <body>
+    <div style="max-width: 880px; margin: 0 auto 1rem auto; text-align: left">
+      <a
+        href="dashboard.html"
+        style="
+          display: inline-block;
+          background-color: var(--accent);
+          color: white;
+          padding: 0.5rem 1.2rem;
+          border-radius: 999px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: background 0.3s ease;
+          font-size: 0.95rem;
+        "
+        onmouseover="this.style.backgroundColor=getComputedStyle(document.documentElement).getPropertyValue('--accent-dark')"
+        onmouseout="this.style.backgroundColor=getComputedStyle(document.documentElement).getPropertyValue('--accent')"
+      >
+        ← Home
+      </a>
+    </div>
+
+    <div class="forum-container">
+      <h1>The SheCircle</h1>
+      <p class="subheading">
+        You've never truly left, because this circle always brings you back.
+      </p>
+
+      <div class="comment-count" id="comment-count">0 Comments</div>
+
+      <div class="comment-form" id="comment-form">
+        <textarea
+          id="comment-input"
+          rows="3"
+          placeholder="Write your comment..."
+        ></textarea>
+        <button onclick="submitComment()">Post Comment</button>
+      </div>
+
+      <div id="comments-list"></div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script>
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      let currentUser = null;
+
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          currentUser = user;
+          listenToComments();
+        } else {
+          document.getElementById("comment-form").innerHTML = `
+            <p style="color:#777;">Please <a href="login.html" style="color:#ff5f9e;">login</a> to post a comment.</p>`;
+          listenToComments();
+        }
+      });
+
+      function submitComment(parentId = null, textareaId = "comment-input") {
+        const text = document.getElementById(textareaId).value.trim();
+        if (!text || !currentUser) return;
+
+        db.collection("users")
+          .doc(currentUser.uid)
+          .get()
+          .then((doc) => {
+            const name = doc.exists
+              ? doc.data().name
+              : currentUser.email.split("@")[0];
+
+            return db.collection("comments").add({
+              userId: currentUser.uid,
+              username: name,
+              message: text,
+              pageId: "alumni-forum",
+              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+              parentId: parentId || null,
+              likes: 0,
+              likedBy: [],
+            });
+          })
+          .then(() => {
+            document.getElementById(textareaId).value = "";
+          })
+          .catch((err) => console.error("Error posting comment:", err));
+      }
+
+      function formatTimestamp(timestamp) {
+        if (!timestamp?.seconds) return "just now";
+
+        const now = new Date();
+        const commentDate = new Date(timestamp.seconds * 1000);
+        const diff = (now - commentDate) / 1000;
+
+        const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+        if (diff < 60) return "just now";
+        if (diff < 3600) return rtf.format(-Math.floor(diff / 60), "minute");
+        if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), "hour");
+        if (diff < 604800) return rtf.format(-Math.floor(diff / 86400), "day");
+        if (diff < 2628000)
+          return rtf.format(-Math.floor(diff / 604800), "week");
+        if (diff < 31536000)
+          return rtf.format(-Math.floor(diff / 2628000), "month");
+
+        return rtf.format(-Math.floor(diff / 31536000), "year");
+      }
+
+      function listenToComments() {
+        db.collection("comments")
+          .where("pageId", "==", "alumni-forum")
+          .orderBy("timestamp", "desc")
+          .onSnapshot((snapshot) => {
+            const list = document.getElementById("comments-list");
+            const count = document.getElementById("comment-count");
+            list.innerHTML = "";
+
+            const allComments = [];
+            snapshot.forEach((doc) => {
+              allComments.push({ id: doc.id, ...doc.data() });
+            });
+
+            const topLevel = allComments.filter((c) => !c.parentId);
+            const replies = allComments.filter((c) => c.parentId);
+
+            count.innerText = `${topLevel.length} Comment${
+              topLevel.length !== 1 ? "s" : ""
+            }`;
+
+            topLevel.forEach((comment) => {
+              const hasLiked = comment.likedBy?.includes(currentUser?.uid);
+              const likeClass = hasLiked ? "liked" : "";
+              const time = formatTimestamp(comment.timestamp);
+              const showDelete = currentUser?.uid === comment.userId;
+
+              const div = document.createElement("div");
+              div.className = "comment-card";
+              div.setAttribute("data-id", comment.id);
+              div.innerHTML = `
+                <div class="comment-header">${
+                  comment.username || "Anonymous"
+                }</div>
+                <p class="comment-message">${comment.message}</p>
+                <div class="comment-meta">
+                  ${time} • 
+                  <span onclick="toggleReplyForm('${
+                    comment.id
+                  }')" style="cursor:pointer;">Reply</span> • 
+                  <span onclick="likeComment('${
+                    comment.id
+                  }')" style="cursor:pointer;" class="${likeClass}">👍 ${
+                comment.likes || 0
+              }</span>
+                  ${
+                    showDelete
+                      ? `<span style="margin-left:10px; cursor:pointer;" onclick="deleteComment('${comment.id}')">🗑️</span>`
+                      : ""
+                  }
+                </div>
+                <div id="reply-form-${
+                  comment.id
+                }" style="display:none; margin-top:0.5rem;">
+                  <textarea id="reply-input-${
+                    comment.id
+                  }" rows="2" placeholder="Write a reply..."></textarea>
+                  <button onclick="submitComment('${
+                    comment.id
+                  }', 'reply-input-${comment.id}')">Post Reply</button>
+                </div>
+                <div class="replies" style="margin-top:1rem; padding-left:1.2rem;"></div>
+              `;
+              list.appendChild(div);
+
+              const childContainer = div.querySelector(".replies");
+              replies
+                .filter((r) => r.parentId === comment.id)
+                .forEach((reply) => {
+                  const replyLiked = reply.likedBy?.includes(currentUser?.uid);
+                  const replyLikeClass = replyLiked ? "liked" : "";
+                  const replyTime = formatTimestamp(reply.timestamp);
+                  const showReplyDelete = currentUser?.uid === reply.userId;
+
+                  const r = document.createElement("div");
+                  r.className = "comment-card reply-card";
+
+                  r.setAttribute("data-id", reply.id);
+                  r.innerHTML = `
+                    <div class="comment-header">${
+                      reply.username || "Anonymous"
+                    }</div>
+                    <p class="comment-message">${reply.message}</p>
+                    <div class="comment-meta">
+                      ${replyTime} • 
+                      <span onclick="likeComment('${
+                        reply.id
+                      }')" style="cursor:pointer;" class="${replyLikeClass}">👍 ${
+                    reply.likes || 0
+                  }</span>
+                      ${
+                        showReplyDelete
+                          ? `<span style="margin-left:10px; cursor:pointer;" onclick="deleteComment('${reply.id}')">🗑️</span>`
+                          : ""
+                      }
+                    </div>
+                  `;
+                  childContainer.appendChild(r);
+                });
+            });
+          });
+      }
+
+      function toggleReplyForm(id) {
+        const form = document.getElementById(`reply-form-${id}`);
+        form.style.display = form.style.display === "none" ? "block" : "none";
+      }
+
+      function likeComment(id) {
+        if (!currentUser) return;
+        const commentRef = db.collection("comments").doc(id);
+        commentRef.get().then((doc) => {
+          const data = doc.data();
+          const likedBy = data.likedBy || [];
+          const hasLiked = likedBy.includes(currentUser.uid);
+
+          if (!hasLiked) {
+            commentRef.update({
+              likes: (data.likes || 0) + 1,
+              likedBy: firebase.firestore.FieldValue.arrayUnion(
+                currentUser.uid
+              ),
+            });
+          } else {
+            commentRef.update({
+              likes: Math.max((data.likes || 1) - 1, 0),
+              likedBy: firebase.firestore.FieldValue.arrayRemove(
+                currentUser.uid
+              ),
+            });
+          }
+        });
+      }
+
+      function deleteComment(id) {
+        if (!confirm("Are you sure you want to delete this comment?")) return;
+        const commentElement = document.querySelector(`[data-id="${id}"]`);
+        if (commentElement) {
+          commentElement.classList.add("fade-out");
+          setTimeout(() => {
+            db.collection("comments").doc(id).delete();
+          }, 500);
+        }
+      }
+    </script>
+  </body>
 </html>

@@ -1,252 +1,242 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlmaTies</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AlmaTies Dashboard</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
+    <!-- Fonts & Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap');
+      body {
+        font-family: "Poppins", sans-serif;
+        transition: background 0.4s, color 0.4s;
+      }
+      .logo {
+        font-family: "Pacifico", cursive;
+      }
+      #tsparticles {
+        position: fixed;
+        inset: 0;
+        z-index: -10;
+      }
+    </style>
+  </head>
 
-/* Reset & Base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
+  <body
+    id="pageBody"
+    class="bg-gradient-to-br from-indigo-50 to-white min-h-screen text-gray-800"
+  >
+    <!-- Particles Background -->
+    <div id="tsparticles"></div>
 
-body {
-  background: url('alum.jpeg') no-repeat center center fixed;
-  background-size: cover;
-  min-height: 100vh;
-  color: #111827;
-  display: flex;
-  flex-direction: column;
-}
+    <!-- Header -->
+    <header
+      id="header"
+      class="sticky top-0 z-50 px-10 py-6 flex items-center justify-between 
+             bg-white/80 shadow-md rounded-b-xl transition-theme"
+    >
+      <h1
+        class="text-4xl text-indigo-600 logo tracking-wider cursor-pointer"
+        onclick="window.location.href='dashboard.html'"
+      >
+        AlmaTies
+      </h1>
 
-/* Header */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30px 60px;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.2);
-  position: relative;
-  z-index: 10;
-}
-
-.logo {
-  font-family: 'Pacifico', cursive;
-  font-size: 2rem;
-  color: #ec4899;
-  letter-spacing: 2px;
-  cursor: pointer;
-}
-
-/* User Profile Section */
-.user-profile {
-  display: flex;
-  align-items: center;
-}
-
-.profile-pic {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 14px;
-  color: #111827;
-}
-
-.user-name {
-  margin-right: 15px;
-  font-size: 14px;
-  color: #374151;
-}
-
-.logout-btn {
-  background: rgba(255, 255, 255, 0.6);
-  border: none;
-  color: #111827;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 25px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-}
-
-.logout-btn:hover {
-  background: #ec4899;
-  color: #fff;
-}
-
-/* Main Dashboard Content */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  padding: 60px 20px;
-}
-
-.main-content .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(6px);
-  z-index: 0;
-}
-
-/* Dashboard Container */
-.dashboard-container {
-  position: relative;
-  z-index: 1;
-  max-width: 1000px;
-  width: 100%;
-  text-align: center;
-  padding: 40px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-/* Welcome Section */
-.welcome-section h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #111827;
-}
-
-.welcome-section p {
-  font-size: 1rem;
-  color: #374151;
-  line-height: 1.8;
-  max-width: 700px;
-  margin: 0 auto 40px;
-}
-
-/* Navigation Cards Grid */
-.nav-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 25px;
-  padding: 20px 0;
-}
-
-/* Nav Card Styles */
-.nav-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 30px 20px;
-  text-align: center;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.nav-card:hover {
-  background: #ec4899;
-  color: #fff;
-  transform: translateY(-5px);
-}
-
-.nav-card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-.nav-card p {
-  font-size: 0.9rem;
-  color: #4b5563;
-}
-.nav-card:hover p {
-  color: #fff;
-}
-.user-icon {
-  font-size: 40px;
-  color: #374151;
-  margin-right: 15px;
-}
-      </style>
-      
-    
-</head>
-<body>
-    <header>
-        <h2 class="logo" onclick="window.location.href='dashboard.html'">AlmaTies</h2>
-        <div class="user-profile">
-            <!-- <div class="profile-pic">U</div> -->
-            <i class="fas fa-user-circle user-icon" onclick="window.location.href='profile.html'"></i> <!-- 👈 Profile icon here -->
-            <button class="logout-btn" onclick="window.location.href='index.html'">LOGOUT</button>
-        </div>
+      <div class="flex items-center space-x-4">
+        <button
+          id="profileBtn"
+          onclick="window.location.href='profile.html'"
+          class="px-5 py-2.5 text-lg font-medium border rounded-full transition 
+                 bg-white text-indigo-600 border-indigo-500 
+                 hover:bg-indigo-500 hover:text-white"
+        >
+          Profile
+        </button>
+        <button
+          id="logoutBtn"
+          onclick="logout()"
+          class="px-5 py-2.5 text-lg font-medium border rounded-full transition 
+                 bg-white text-indigo-600 border-indigo-500 
+                 hover:bg-indigo-500 hover:text-white"
+        >
+          Logout
+        </button>
+      </div>
     </header>
 
-    <div class="main-content">
-        <div class="overlay"></div>
-        
-        <div class="dashboard-container">
-            <div class="welcome-section">
-                <h1>Welcome to Your Dashboard</h1>
-                <p>“Connection is the heart of growth.”
-                    This platform isn’t just about networking — it’s about building a legacy.
-                    Engage in meaningful conversations, discover new perspectives, and leave a lasting impact.</p>
-            </div>
-            
-            <div class="nav-grid">
-                <!-- <div class="nav-card" onclick="window.location.href='profile.html'">
-                    <div class="nav-icon">👤</div>
-                    <h3>Profile</h3>
-                    <p>View and edit your personal profile information</p>
-                </div> -->
-                
-                
-                
-                <div class="nav-card" onclick="window.location.href='alumni.html'">
-                    <div class="nav-icon">🎓</div>
-                    <h3>Alumni</h3>
-                    <p>Connect with graduates from your institution</p>
-                </div>
-                
-                <div class="nav-card" onclick="window.location.href='students.html'">
-                    <div class="nav-icon">📚</div>
-                    <h3>Students</h3>
-                    <p>Connect with current students</p>
-                </div>
-                
-                <div class="nav-card" onclick="window.location.href='chat.html'">
-                    <div class="nav-icon">💬</div>
-                    <h3>Chat</h3>
-                    <p>Direct messaging with members</p>
-                </div>
-
-                <div class="nav-card" onclick="window.location.href='forum.html'">
-                    <div class="nav-icon">👥</div>
-                    <h3>Community Forum</h3>
-                    <p>Join discussions with students and alumni</p>
-                </div>
-                
-                
-            </div>
+    <!-- Main Content -->
+    <main class="flex flex-col items-center justify-center p-8">
+      <div
+        id="mainCard"
+        class="w-full max-w-6xl mt-12 p-12 rounded-2xl shadow-2xl transition-theme bg-white text-gray-800"
+      >
+        <div class="text-center mb-12">
+          <h2 class="text-5xl font-extrabold text-indigo-700 mb-5">
+            Welcome to Your Dashboard
+          </h2>
+          <p
+            id="dashboardquote"
+            class="text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto"
+          >
+            <span class="italic">“Connection is the heart of growth.”</span>
+            This platform isn’t just about networking — it’s about building a legacy.
+          </p>
         </div>
-    </div>
-</body>
+
+        <!-- Dashboard Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div
+            onclick="window.location.href='alumni.html'"
+            class="p-8 text-center rounded-xl shadow-md transition duration-300 
+                   cursor-pointer bg-white text-gray-800 hover:bg-indigo-100"
+          >
+            <div class="text-5xl mb-4">🎓</div>
+            <h3 class="text-xl font-semibold mb-2">Alumni</h3>
+            <p>Connect with graduates from your institution.</p>
+          </div>
+
+          <div
+            onclick="window.location.href='students.html'"
+            class="p-8 text-center rounded-xl shadow-md transition duration-300 
+                   cursor-pointer bg-white text-gray-800 hover:bg-indigo-100"
+          >
+            <div class="text-5xl mb-4">📚</div>
+            <h3 class="text-xl font-semibold mb-2">Students</h3>
+            <p>Connect with current students.</p>
+          </div>
+
+          <div
+            onclick="window.location.href='chat.html'"
+            class="p-8 text-center rounded-xl shadow-md transition duration-300 
+                   cursor-pointer bg-white text-gray-800 hover:bg-indigo-100"
+          >
+            <div class="text-5xl mb-4">💬</div>
+            <h3 class="text-xl font-semibold mb-2">Chat</h3>
+            <p>Direct messaging with members.</p>
+          </div>
+
+          <div
+            onclick="window.location.href='forum.html'"
+            class="p-8 text-center rounded-xl shadow-md transition duration-300 
+                   cursor-pointer bg-white text-gray-800 hover:bg-indigo-100"
+          >
+            <div class="text-5xl mb-4">👥</div>
+            <h3 class="text-xl font-semibold mb-2">Community Forum</h3>
+            <p>Join discussions with students and alumni.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script>
+
+      function logout() {
+        firebase.auth().signOut().then(() => {
+          window.location.href = "index.html";
+        });
+      }
+    </script>
+
+    <!-- Dark/Light Mode Loader + Particles -->
+    <script>
+      const body = document.getElementById("pageBody");
+      const header = document.getElementById("header");
+      const mainCard = document.getElementById("mainCard");
+      const profileBtn = document.getElementById("profileBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      function getThemeFromLocalStorage() {
+        return localStorage.getItem("theme") === "dark";
+      }
+
+      function applyTheme(isDark) {
+        body.className = isDark
+          ? "bg-gradient-to-br from-gray-900 to-black min-h-screen text-white"
+          : "bg-gradient-to-br from-indigo-50 to-white min-h-screen text-gray-800";
+
+        header.className = isDark
+          ? "sticky top-0 z-50 px-10 py-6 flex items-center justify-between bg-gray-800/80 shadow-md rounded-b-xl transition-theme"
+          : "sticky top-0 z-50 px-10 py-6 flex items-center justify-between bg-white/80 shadow-md rounded-b-xl transition-theme";
+
+        mainCard.className = isDark
+          ? "w-full max-w-6xl mt-12 p-12 rounded-2xl shadow-2xl transition-theme bg-gray-800/90 text-white"
+          : "w-full max-w-6xl mt-12 p-12 rounded-2xl shadow-2xl transition-theme bg-white text-gray-800";
+
+        const btnClass = isDark
+          ? "px-5 py-2.5 text-lg font-medium border rounded-full transition bg-black text-indigo-400 border-indigo-500 hover:bg-indigo-500 hover:text-white"
+          : "px-5 py-2.5 text-lg font-medium border rounded-full transition bg-white text-indigo-600 border-indigo-500 hover:bg-indigo-500 hover:text-white";
+        profileBtn.className = logoutBtn.className = btnClass;
+
+        document.querySelectorAll(".text-center.rounded-xl").forEach(card => {
+          card.className = isDark
+            ? "p-8 text-center rounded-xl shadow-md transition duration-300 cursor-pointer bg-gray-800 text-white hover:bg-gray-700"
+            : "p-8 text-center rounded-xl shadow-md transition duration-300 cursor-pointer bg-white text-gray-800 hover:bg-indigo-100";
+        });
+
+        const quote = document.getElementById("dashboardquote");
+        if (quote) {
+          quote.className = isDark
+            ? "text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto"
+            : "text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto";
+        }
+
+        loadParticles(isDark ? "#ffffff" : "#1e1e1e");
+      }
+
+      function loadParticles(color) {
+        tsParticles.load("tsparticles", {
+          background: { color: "transparent" },
+          particles: {
+            number: { value: 100, density: { enable: true, area: 1000 } },
+            color: { value: color },
+            links: {
+              enable: true,
+              distance: 120,
+              color: color,
+              opacity: 0.3,
+              width: 0.6,
+            },
+            move: { enable: true, speed: 1 },
+            size: { value: { min: 1, max: 3 } },
+            opacity: { value: 0.3 },
+            shape: { type: "circle" },
+          },
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "grab" },
+              resize: true,
+            },
+            modes: {
+              grab: {
+                distance: 140,
+                links: { opacity: 0.4 },
+              },
+            },
+          },
+          detectRetina: true,
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        applyTheme(getThemeFromLocalStorage());
+      });
+    </script>
+  </body>
 </html>

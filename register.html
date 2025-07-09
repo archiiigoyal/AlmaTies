@@ -1,211 +1,427 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AlmaTies - Register</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AlmaTies - Register</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap');
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        transition: background 0.4s, color 0.4s;
+        min-height: 100vh;
+      }
 
-    body,
-    html {
-      height: 100%;
-      background: url('alum.jpeg') no-repeat center center fixed;
-      background-size: cover;
-      color: #333;
-    }
+      .logo {
+        font-family: "Pacifico", cursive;
+      }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 30px 60px;
-      backdrop-filter: blur(10px);
-      position: absolute;
-      top: 0;
-      width: 100%;
-      z-index: 10;
-    }
+      .transition-theme {
+        transition: background-color 0.4s, color 0.4s;
+      }
 
-    .radio-label {
-      margin-right: 40px;
-      /* Adjust this value as needed */
-    }
+      .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2.5rem;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        border-radius: 0 0 1rem 1rem;
+      }
 
+      .logo-heading {
+        font-size: 1.875rem;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        color: #4f46e5;
+      }
 
-    .logo {
-      font-family: 'Pacifico', cursive;
-      font-size: 2rem;
-      color: #ec4899;
-      letter-spacing: 2px;
-    }
+      .header-buttons {
+        display: flex;
+        gap: 1rem;
+      }
 
-    .buttons button {
-      margin-left: 15px;
-      padding: 10px 20px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: none;
-      border-radius: 25px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
-      color: #333;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+      .theme-button {
+        font-weight: 500;
+        padding: 0.5rem 1.25rem;
+        border-radius: 9999px;
+        border: 1px solid #6366f1;
+        background-color: white;
+        color: #4f46e5;
+        transition: background 0.3s, color 0.3s;
+      }
 
-    .buttons button:hover {
-      background: #ec4899;
-      color: #fff;
-    }
+      .theme-button:hover {
+        background-color: #6366f1;
+        color: white;
+      }
 
-    .main {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      padding-top: 80px;
-    }
+      .main-section {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
 
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(6px);
-      z-index: 1;
-    }
+      .form-card {
+        width: 100%;
+        max-width: 32rem;
+        padding: 2.5rem;
+        border-radius: 1.5rem;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
 
-    .auth-container {
-      position: relative;
-      z-index: 2;
-      background: rgba(255, 255, 255, 0.4);
-      border-radius: 20px;
-      max-width: 400px;
-      width: 100%;
-      padding: 40px;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(12px);
-    }
+      .form-title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #3730a3;
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
 
-    .auth-container h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 25px;
-    }
+      .form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
 
-    .form-group {
-      margin-bottom: 20px;
-      text-align: left;
-    }
+      .radio-selector {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      color: #374151;
-    }
+      .radio-container {
+        display: flex;
+        gap: 1rem;
+        background-color: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(6px);
+        padding: 0.5rem;
+        border-radius: 9999px;
+        box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+      }
 
-    .form-group input {
-      width: 100%;
-      padding: 12px 15px;
-      border-radius: 20px;
-      border: none;
-      background: rgba(255, 255, 255, 0.3);
-      color: #111827;
-      font-size: 16px;
-      backdrop-filter: blur(6px);
-    }
+      .radio-option {
+        padding: 0.5rem 1.5rem;
+        border-radius: 9999px;
+        color: #111827;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
 
-    .form-group input:focus {
-      outline: 2px solid #ec4899;
-      background: rgba(255, 255, 255, 0.5);
-    }
+      .radio-option:hover {
+        background-color: #e0e7ff;
+      }
 
-    .submit-btn {
-      width: 100%;
-      padding: 12px 20px;
-      font-weight: 600;
-      border: none;
-      border-radius: 25px;
-      background: #ec4899;
-      color: #fff;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s ease;
-    }
+      .peer:checked + .radio-option {
+        background-color: #6366f1;
+        color: white;
+      }
 
-    .submit-btn:hover {
-      background: #db2777;
-    }
-  </style>
+      .input-wrapper {
+        display: flex;
+        flex-direction: column;
+      }
 
+      .input-label {
+        font-size: 0.875rem;
+        color: #374151;
+        margin-bottom: 0.25rem;
+      }
 
-</head>
+      .input-field {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 9999px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 1px solid #d1d5db;
+        outline: none;
+        color: #1f2937;
+      }
 
-<body>
-  <header>
-    <h2 class="logo" onclick="window.location.href='index.html'">AlmaTies</h2>
-    <div class="buttons">
-      <button class="register" onclick="window.location.href='register.html'">REGISTER</button>
-      <button class="login" onclick="window.location.href='login.html'">LOGIN</button>
-    </div>
-  </header>
+      .input-field:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+      }
 
-  <div class="main">
-    <div class="overlay"></div>
+      .submit-button {
+        width: 100%;
+        background-color: #6366f1;
+        color: white;
+        font-weight: 600;
+        padding: 0.75rem;
+        border-radius: 9999px;
+        transition: background 0.3s;
+        border: none;
+      }
 
-    <!-- Registration Form -->
-    <div class="auth-container">
-      <h2>Create Account</h2>
-      <form action="login.html" onsubmit="return true;">
-        <div class="user-type">
-          <label class="radio-label">
-            <input type="radio" name="user-type" value="alumni" required checked>
-            <span>Alumni</span>
-          </label>
-          <label class="radio-label">
-            <input type="radio" name="user-type" value="student" required>
-            <span>Student</span>
-          </label>
-        </div>
-        <div class="form-group">
-          <label for="register-name">Full Name</label>
-          <input type="text" id="register-name" required>
-        </div>
-        <div class="form-group">
-          <label for="register-email">Email Address</label>
-          <input type="email" id="register-email" required>
-        </div>
-        <div class="form-group">
-          <label for="register-password">Password</label>
-          <input type="password" id="register-password" required>
-        </div>
-        <div class="form-group">
-          <label for="register-confirm">Confirm Password</label>
-          <input type="password" id="register-confirm" required>
-        </div>
-        <button type="submit" class="submit-btn"
-          onclick="window.location.href='login.html'; return false;">REGISTER</button>
-        <div class="form-switch">
-          Already have an account? <a href="login.html">Login Here</a>
-        </div>
-      </form>
-    </div>
-  </div>
-</body>
+      .submit-button:hover {
+        background-color: #4f46e5;
+      }
 
+      .footer-text {
+        font-size: 0.875rem;
+        color: #374151;
+        text-align: center;
+        margin-top: 0.5rem;
+      }
+
+      .footer-text a {
+        color: #6366f1;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .footer-text a:hover {
+        text-decoration: underline;
+      }
+
+      .message-box {
+        font-size: 0.875rem;
+        text-align: center;
+        font-weight: 500;
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body
+    id="pageBody"
+    class="bg-gradient-to-br from-white to-indigo-50 text-gray-800 transition-theme"
+  >
+    <!-- Header -->
+    <header id="header" class="header-bar bg-white/80 transition-theme">
+      <h2 class="logo logo-heading" onclick="window.location.href='index.html'">
+        AlmaTies
+      </h2>
+      <div class="header-buttons">
+        <button
+          id="loginBtn"
+          onclick="window.location.href='login.html'"
+          class="theme-button"
+        >
+          Login
+        </button>
+        <button
+          id="homeBtn"
+          onclick="window.location.href='index.html'"
+          class="theme-button"
+        >
+          Home
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-section">
+      <div id="registerCard" class="form-card bg-white/90 transition-theme">
+        <h2 class="form-title">Create Account</h2>
+
+        <form id="register-form" class="form">
+          <!-- User Type -->
+          <div class="radio-selector">
+            <div class="radio-container">
+              <label class="cursor-pointer">
+                <input
+                  type="radio"
+                  name="user-type"
+                  value="alumni"
+                  class="hidden peer"
+                  checked
+                />
+                <div class="radio-option">Alumni</div>
+              </label>
+              <label class="cursor-pointer">
+                <input
+                  type="radio"
+                  name="user-type"
+                  value="student"
+                  class="hidden peer"
+                />
+                <div class="radio-option">Student</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Fields -->
+          <div class="input-wrapper">
+            <label for="register-name" class="input-label">Full Name</label>
+            <input
+              type="text"
+              id="register-name"
+              required
+              class="input-field"
+            />
+          </div>
+          <div class="input-wrapper">
+            <label for="register-email" class="input-label"
+              >Email Address</label
+            >
+            <input
+              type="email"
+              id="register-email"
+              required
+              class="input-field"
+            />
+          </div>
+          <div class="input-wrapper">
+            <label for="register-password" class="input-label">Password</label>
+            <input
+              type="password"
+              id="register-password"
+              required
+              class="input-field"
+            />
+          </div>
+          <div class="input-wrapper">
+            <label for="register-confirm" class="input-label"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="register-confirm"
+              required
+              class="input-field"
+            />
+          </div>
+
+          <!-- Message -->
+          <div id="register-message" class="message-box"></div>
+
+          <!-- Submit -->
+          <button type="submit" class="submit-button">Register</button>
+
+          <!-- Login Link -->
+          <div class="footer-text">
+            Already have an account?
+            <a href="login.html">Login Here</a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+
+    <!-- Theme Logic -->
+    <script>
+      const body = document.getElementById("pageBody");
+      const header = document.getElementById("header");
+      const card = document.getElementById("registerCard");
+      const loginBtn = document.getElementById("loginBtn");
+      const homeBtn = document.getElementById("homeBtn");
+
+      function applyThemeFromLocalStorage() {
+        const theme = localStorage.getItem("theme") || "light";
+
+        if (theme === "dark") {
+          body.className =
+            "bg-gradient-to-br from-gray-900 to-black text-white transition-theme min-h-screen";
+          header.className = "header-bar bg-gray-800/80 transition-theme";
+          card.className = "form-card bg-gray-800/90 transition-theme";
+          loginBtn.className = homeBtn.className =
+            "theme-button bg-black text-indigo-300 border border-indigo-500 hover:bg-indigo-500 hover:text-white";
+        } else {
+          body.className =
+            "bg-gradient-to-br from-white to-indigo-50 text-gray-800 transition-theme min-h-screen";
+          header.className = "header-bar bg-white/80 transition-theme";
+          card.className = "form-card bg-white/90 transition-theme";
+          loginBtn.className = homeBtn.className = "theme-button";
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", applyThemeFromLocalStorage);
+    </script>
+    <script>
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      const form = document.getElementById("register-form");
+      const msgBox = document.getElementById("register-message");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const rawName = document.getElementById("register-name").value.trim();
+        const name = rawName
+          .split(" ")
+          .filter((part) => part)
+          .map(
+            (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          )
+          .join(" ");
+
+        const email = document.getElementById("register-email").value.trim();
+        const password = document.getElementById("register-password").value;
+        const confirmPassword =
+          document.getElementById("register-confirm").value;
+        const userType = document.querySelector(
+          'input[name="user-type"]:checked'
+        ).value;
+
+        msgBox.classList.add("hidden");
+
+        if (password !== confirmPassword) {
+          msgBox.textContent = "❌ Passwords do not match!";
+          msgBox.style.color = "red";
+          msgBox.classList.remove("hidden");
+          return;
+        }
+
+        auth
+          .createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("User created:", user.uid);
+
+            return db.collection("users").doc(user.uid).set({
+              name: name,
+              email: email,
+              userType: userType,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+          })
+          .then(() => {
+            console.log("User data saved in Firestore");
+            msgBox.textContent = "✅ Registered and logged in! Redirecting...";
+            msgBox.style.color = "green";
+            msgBox.classList.remove("hidden");
+            form.reset();
+            setTimeout(() => {
+              window.location.href = "dashboard.html";
+            }, 1500);
+          })
+          .catch((error) => {
+            console.error("Registration error:", error);
+            let errMsg = "Something went wrong.";
+            if (error.code === "auth/email-already-in-use") {
+              errMsg = "❌ Email is already registered.";
+            } else if (error.code === "auth/weak-password") {
+              errMsg = "❌ Password should be at least 6 characters.";
+            } else if (error.message) {
+              errMsg = "❌ " + error.message;
+            }
+
+            msgBox.textContent = errMsg;
+            msgBox.style.color = "red";
+            msgBox.classList.remove("hidden");
+          });
+      });
+    </script>
+  </body>
 </html>

@@ -1,189 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Students Page</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #fce4ec, #f8bbd0);
-      color: #333;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 30px 20px;
-    }
-
-    .search-bar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 30px;
-      background-color: #ffffff80;
-      padding: 15px;
-      border-radius: 15px;
-    }
-
-    .search-bar input, .search-bar select, .search-bar button {
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-
-    .search-bar input {
-      flex-grow: 1;
-      width: 100%;
-    }
-
-    .search-bar button {
-      background-color: #e91e63;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .search-bar button:hover {
-      background-color: #d81b60;
-    }
-
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 25px;
-    }
-
-    .student-card {
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-      padding: 30px 20px;
-      height: 250px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      transition: transform 0.3s ease;
-    }
-
-    .student-card:hover {
-      transform: translateY(-7px);
-    }
-
-    .avatar {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 15px;
-    }
-
-    .avatar img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #f8bbd0;
-    }
-
-    .student-info {
-      text-align: center;
-      font-size: 16px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search...">
-      <select id="searchCategory">
-        <option value="name">Name</option>
-        <option value="course">Course</option>
-        <option value="interests">Interests</option>
-      </select>
-      <button onclick="applySearch()">Search</button>
-    </div>
-
-    <div class="card-grid" id="studentCards">
-      <!-- Student cards will be inserted here -->
-    </div>
-  </div>
-
-  <script>
-    const students = [
-      {
-        name: "Aarohi Sharma",
-        course: "B.Tech CSE'27",
-        interests: "AI, Web Development",
-        avatarColor: "#f06292"
-      },
-      {
-        name: "Meera Verma",
-        course: "B.Tech IT'25",
-        interests: "Astronomy, Robotics",
-        avatarColor: "#f48fb1"
-      },
-      {
-        name: "Saanvi Khanna",
-        course: "B.Tech CSE-AI'26",
-        interests: "Finance, Marketing",
-        avatarColor: "#f8bbd0"
-      },
-      {
-        name: "Isha Kapoor",
-        course: "B.Tech IT'27",
-        interests: "Cybersecurity, UX Design",
-        avatarColor: "#ce93d8"
-      },
-      {
-        name: "Tanya Singh",
-        course: "B.Tech ECE'26",
-        interests: "Writing, Editing",
-        avatarColor: "#ba68c8"
-      },
-      {
-        name: "Riya Yadav",
-        course: "B.Tech CSE'25",
-        interests: "App Development",
-        avatarColor: "#ba68c8"
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReUnite | Students</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+    <style>
+      #particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
       }
-    ];
+    </style>
 
-    function renderStudents(list) {
-      const container = document.getElementById('studentCards');
-      container.innerHTML = '';
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
 
-      list.forEach(student => {
-        const card = document.createElement('div');
-        card.className = 'student-card';
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
 
-        card.innerHTML = `
-          <div class="avatar">
-            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=${student.avatarColor.substring(1)}&color=fff" alt="Avatar">
-          </div>
-          <div class="student-info">
-            <strong>${student.name}</strong><br>
-            Course: ${student.course}<br>
-            Interests: ${student.interests}
-          </div>
-        `;
+      body {
+        transition: background 0.3s, color 0.3s;
+        padding: 2rem;
+      }
 
-        container.appendChild(card);
+      .light {
+        background: #f0f4ff;
+        color: #333;
+      }
+
+      .dark {
+        background: #111827;
+        color: #f3f4f6;
+      }
+
+      .top-bar {
+        max-width: 1200px;
+        margin: 0 auto 1rem auto;
+        text-align: left;
+      }
+
+      .home-link {
+        display: inline-block;
+        background-color: #4f46e5;
+        color: white;
+        padding: 0.5rem 1.2rem;
+        border-radius: 999px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.3s ease;
+        font-size: 0.95rem;
+      }
+
+      .home-link:hover {
+        background-color: #4338ca;
+      }
+
+      .page-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 6px 30px rgba(79, 70, 229, 0.05);
+      }
+
+      .light .page-wrapper {
+        background: #ffffff;
+      }
+
+      .dark .page-wrapper {
+        background: #1f2937;
+      }
+
+      .title {
+        text-align: center;
+        font-family: "Pacifico", cursive;
+        font-size: 3.2rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1.5rem;
+        letter-spacing: 1px;
+      }
+
+      .light .title {
+        color: #4f46e5;
+      }
+
+      .dark .title {
+        color: #a5b4fc;
+      }
+
+      .search-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 30px;
+        backdrop-filter: blur(12px);
+        padding: 12px 20px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        width: 100%;
+      }
+
+      .light .search-bar {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      .dark .search-bar {
+        background: rgba(31, 41, 55, 0.6);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .search-bar input,
+      .search-bar select,
+      .search-bar button {
+        font-size: 16px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+      }
+
+      .light .search-bar input,
+      .light .search-bar select {
+        background: #fff;
+        color: #111;
+        border: 1px solid #ddd;
+      }
+
+      .dark .search-bar input,
+      .dark .search-bar select {
+        background: #111827;
+        color: #f3f4f6;
+        border: 1px solid #374151;
+      }
+
+      .search-bar input:focus,
+      .search-bar select:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        transition: all 0.25s ease;
+      }
+
+      .search-bar input {
+        flex-grow: 1;
+      }
+
+      .search-bar button {
+        background: linear-gradient(to right, #6366f1, #818cf8);
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .search-bar button:hover {
+        background: linear-gradient(to right, #4f46e5, #6366f1);
+      }
+
+      .nav-card-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+        gap: 30px;
+      }
+
+      .card {
+        border-radius: 20px;
+        padding: 35px;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        min-height: 160px;
+      }
+
+      .light .card {
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .dark .card {
+        background: rgba(31, 41, 55, 0.8);
+      }
+
+      .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      }
+
+      .card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #c7d2fe;
+        background-color: #fff;
+      }
+
+      .card-details {
+        flex: 1;
+      }
+
+      .card-details strong {
+        font-size: 20px;
+      }
+
+      .light .card-details strong {
+        color: #4f46e5;
+      }
+
+      .dark .card-details strong {
+        color: #a5b4fc;
+      }
+
+      .card a {
+        color: #6366f1;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .no-results {
+        text-align: center;
+        font-size: 18px;
+        margin-top: 20px;
+        color: #888;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="particles-container"></div>
+
+    <div class="top-bar">
+      <a href="dashboard.html" class="home-link">← Home</a>
+    </div>
+
+    <div class="page-wrapper">
+      <div class="title">ReUnite</div>
+
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search students..." />
+        <select id="searchCategory">
+          <option value="name">Name</option>
+        </select>
+        <button onclick="applySearch()">Search</button>
+      </div>
+
+      <div id="studentCards" class="nav-card-wrapper"></div>
+    </div>
+    <script src="./firebase-config.js"></script>
+    <script>
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+
+      let studentData = [];
+      let currentUserUid = "";
+
+      function renderStudents(filterKey = "", filterValue = "") {
+        const cardsContainer = document.getElementById("studentCards");
+        cardsContainer.innerHTML = "";
+        let found = false;
+
+        studentData.forEach((s) => {
+          if (s.id === currentUserUid) return;
+
+          if (
+            !filterKey ||
+            s[filterKey]?.toLowerCase().includes(filterValue.toLowerCase())
+          ) {
+            found = true;
+            const imageSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+              s.name
+            )}&background=EEF2FF&color=4F46E5&bold=true`;
+
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 30px;">
+                <img src="${imageSrc}" alt="Avatar">
+                <div class="card-details">
+                  <strong>${s.name}</strong><br>
+                  <span style="color:#aaa;">Branch: ${
+                    s.academics?.branch || "N/A"
+                  }</span><br>
+                  <a href="dm.html?uid=${
+                    s.id
+                  }" class="chat-link" onclick="event.stopPropagation()">Chat Now</a>
+                </div>
+              </div>
+            `;
+
+            card.addEventListener("click", () => {
+              window.location.href = `profile.html?uid=${s.id}`;
+            });
+
+            cardsContainer.appendChild(card);
+          }
+        });
+
+        if (!found) {
+          cardsContainer.innerHTML =
+            '<p class="no-results">No students found matching your search.</p>';
+        }
+      }
+
+      function applySearch() {
+        const key = document.getElementById("searchCategory").value;
+        const value = document.getElementById("searchInput").value;
+        renderStudents(key, value);
+      }
+
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          currentUserUid = user.uid;
+
+          db.collection("users")
+            .where("userType", "==", "student")
+            .get()
+            .then(async (snapshot) => {
+              const users = [];
+
+              for (const doc of snapshot.docs) {
+                const userData = { id: doc.id, ...doc.data() };
+
+                try {
+                  const academicSnap = await db
+                    .collection("users")
+                    .doc(doc.id)
+                    .collection("academics")
+                    .limit(1)
+                    .get();
+
+                  if (!academicSnap.empty) {
+                    const academicData = academicSnap.docs[0].data();
+                    userData.academics = academicData;
+                  }
+                } catch (err) {
+                  console.error("Error fetching academic data:", err);
+                }
+
+                users.push(userData);
+              }
+
+              studentData = users;
+              renderStudents();
+            })
+            .catch((err) => {
+              console.error("Error fetching students:", err);
+            });
+        } else {
+          window.location.href = "login.html";
+        }
       });
-    }
 
-    function applySearch() {
-      const category = document.getElementById('searchCategory').value;
-      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      // Apply stored theme on load
+      document.addEventListener("DOMContentLoaded", () => {
+        const theme = localStorage.getItem("theme") || "light";
+        document.body.classList.add(theme);
+      });
+      // Connected particles with "grab" interaction (lines attach to cursor)
+      function loadConnectedParticles(theme) {
+        tsParticles.load("particles-container", {
+          fullScreen: { enable: false },
+          background: {
+            color: { value: theme === "dark" ? "#111827" : "#f0f4ff" },
+          },
+          particles: {
+            number: {
+              value: 70,
+              density: {
+                enable: true,
+                area: 800,
+              },
+            },
+            color: {
+              value: theme === "dark" ? "#a5b4fc" : "#4f46e5",
+            },
+            shape: {
+              type: "circle",
+            },
+            opacity: {
+              value: 0.5,
+            },
+            size: {
+              value: { min: 1, max: 3 },
+            },
+            links: {
+              enable: true,
+              distance: 150,
+              color: theme === "dark" ? "#a5b4fc" : "#4f46e5",
+              opacity: 0.4,
+              width: 1,
+            },
+            move: {
+              enable: true,
+              speed: 1,
+              direction: "none",
+              outModes: { default: "bounce" },
+            },
+          },
+          interactivity: {
+            events: {
+              onHover: {
+                enable: true,
+                mode: "grab",
+              },
+              resize: true,
+            },
+            modes: {
+              grab: {
+                distance: 140,
+                links: {
+                  opacity: 0.7,
+                },
+              },
+            },
+          },
+          detectRetina: true,
+        });
+      }
 
-      const filtered = students.filter(s => s[category].toLowerCase().includes(keyword));
-      renderStudents(filtered);
-    }
-
-    renderStudents(students);
-  </script>
-</body>
+      // Load theme + particles on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        const theme = localStorage.getItem("theme") || "light";
+        document.body.classList.add(theme);
+        loadConnectedParticles(theme);
+      });
+    </script>
+  </body>
 </html>

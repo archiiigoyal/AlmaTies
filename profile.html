@@ -1,95 +1,868 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Profile</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: "#6366f1", // Indigo-500
-          }
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Profile</title>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const theme = localStorage.getItem("theme") || "light";
+        document.documentElement.classList.toggle("dark", theme === "dark");
+      });
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/Galahhad/toggles@main/toggle-style.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <style>
+      /* Dark mode input styles */
+      html.dark .inline-input:not(:disabled),
+      html.dark .clean-input:not(:disabled) {
+        background-color: #1e293b;
+        color: #f8fafc;
+        border: 1px solid transparent; /* Hide border by default */
       }
-    }
-  </script>
-</head>
-<body class="bg-gradient-to-br from-indigo-50 to-white min-h-screen flex items-center justify-center p-6">
 
-  <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-3xl">
-    <!-- Header Section -->
-    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-      <img class="w-32 h-32 rounded-full border-4 border-primary shadow-lg" src="https://i.pravatar.cc/150?img=32" alt="Profile Picture" />
-      <div>
-        <h1 class="text-3xl font-extrabold text-gray-800">Aarohi Sharma</h1>
-        <p class="text-primary font-medium">Student | B.Tech CSE '27</p>
-        <p class="mt-2 text-gray-600 text-sm">Interests: AI, Web Development</p>
+      html.dark .inline-input:not(:disabled):focus,
+      html.dark .clean-input:not(:disabled):focus,
+      html.dark .inline-input:not(:disabled):hover,
+      html.dark .clean-input:not(:disabled):hover {
+        border-color: #4f46e5; /* Show indigo border on focus or hover */
+      }
+
+      html.dark .inline-input:not(:disabled)::placeholder,
+      html.dark .clean-input:not(:disabled)::placeholder {
+        color: #9ca3af; /* gray placeholder */
+      }
+
+      .theme-switch {
+        --toggle-size: 15px;
+        /* the size is adjusted using font-size,
+     this is not transform scale,
+     so you can choose any size */
+        --container-width: 5.625em;
+        --container-height: 2.5em;
+        --container-radius: 6.25em;
+        /* radius 0 - minecraft mode :) */
+        --container-light-bg: #3d7eae;
+        --container-night-bg: #1d1f2c;
+        --circle-container-diameter: 3.375em;
+        --sun-moon-diameter: 2.125em;
+        --sun-bg: #ecca2f;
+        --moon-bg: #c4c9d1;
+        --spot-color: #959db1;
+        --circle-container-offset: calc(
+          (var(--circle-container-diameter) - var(--container-height)) / 2 * -1
+        );
+        --stars-color: #fff;
+        --clouds-color: #f3fdff;
+        --back-clouds-color: #aacadf;
+        --transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
+        --circle-transition: 0.3s cubic-bezier(0, -0.02, 0.35, 1.17);
+      }
+
+      .theme-switch,
+      .theme-switch *,
+      .theme-switch *::before,
+      .theme-switch *::after {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-size: var(--toggle-size);
+      }
+
+      .theme-switch__container {
+        width: var(--container-width);
+        height: var(--container-height);
+        background-color: var(--container-light-bg);
+        border-radius: var(--container-radius);
+        overflow: hidden;
+        cursor: pointer;
+        -webkit-box-shadow: 0em -0.062em 0.062em rgba(0, 0, 0, 0.25),
+          0em 0.062em 0.125em rgba(255, 255, 255, 0.94);
+        box-shadow: 0em -0.062em 0.062em rgba(0, 0, 0, 0.25),
+          0em 0.062em 0.125em rgba(255, 255, 255, 0.94);
+        -webkit-transition: var(--transition);
+        -o-transition: var(--transition);
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .theme-switch__container::before {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        -webkit-box-shadow: 0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset,
+          0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset;
+        box-shadow: 0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset,
+          0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset;
+        border-radius: var(--container-radius);
+      }
+
+      .theme-switch__checkbox {
+        display: none;
+      }
+
+      .theme-switch__circle-container {
+        width: var(--circle-container-diameter);
+        height: var(--circle-container-diameter);
+        background-color: rgba(255, 255, 255, 0.1);
+        position: absolute;
+        left: var(--circle-container-offset);
+        top: var(--circle-container-offset);
+        border-radius: var(--container-radius);
+        -webkit-box-shadow: inset 0 0 0 3.375em rgba(255, 255, 255, 0.1),
+          inset 0 0 0 3.375em rgba(255, 255, 255, 0.1),
+          0 0 0 0.625em rgba(255, 255, 255, 0.1),
+          0 0 0 1.25em rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 0 0 3.375em rgba(255, 255, 255, 0.1),
+          inset 0 0 0 3.375em rgba(255, 255, 255, 0.1),
+          0 0 0 0.625em rgba(255, 255, 255, 0.1),
+          0 0 0 1.25em rgba(255, 255, 255, 0.1);
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-transition: var(--circle-transition);
+        -o-transition: var(--circle-transition);
+        transition: var(--circle-transition);
+        pointer-events: none;
+      }
+
+      .theme-switch__sun-moon-container {
+        pointer-events: auto;
+        position: relative;
+        z-index: 2;
+        width: var(--sun-moon-diameter);
+        height: var(--sun-moon-diameter);
+        margin: auto;
+        border-radius: var(--container-radius);
+        background-color: var(--sun-bg);
+        -webkit-box-shadow: 0.062em 0.062em 0.062em 0em
+            rgba(254, 255, 239, 0.61) inset,
+          0em -0.062em 0.062em 0em #a1872a inset;
+        box-shadow: 0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset,
+          0em -0.062em 0.062em 0em #a1872a inset;
+        -webkit-filter: drop-shadow(0.062em 0.125em 0.125em rgba(0, 0, 0, 0.25))
+          drop-shadow(0em 0.062em 0.125em rgba(0, 0, 0, 0.25));
+        filter: drop-shadow(0.062em 0.125em 0.125em rgba(0, 0, 0, 0.25))
+          drop-shadow(0em 0.062em 0.125em rgba(0, 0, 0, 0.25));
+        overflow: hidden;
+        -webkit-transition: var(--transition);
+        -o-transition: var(--transition);
+        transition: var(--transition);
+      }
+
+      .theme-switch__moon {
+        -webkit-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+        transform: translateX(100%);
+        width: 100%;
+        height: 100%;
+        background-color: var(--moon-bg);
+        border-radius: inherit;
+        -webkit-box-shadow: 0.062em 0.062em 0.062em 0em
+            rgba(254, 255, 239, 0.61) inset,
+          0em -0.062em 0.062em 0em #969696 inset;
+        box-shadow: 0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset,
+          0em -0.062em 0.062em 0em #969696 inset;
+        -webkit-transition: var(--transition);
+        -o-transition: var(--transition);
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .theme-switch__spot {
+        position: absolute;
+        top: 0.75em;
+        left: 0.312em;
+        width: 0.75em;
+        height: 0.75em;
+        border-radius: var(--container-radius);
+        background-color: var(--spot-color);
+        -webkit-box-shadow: 0em 0.0312em 0.062em rgba(0, 0, 0, 0.25) inset;
+        box-shadow: 0em 0.0312em 0.062em rgba(0, 0, 0, 0.25) inset;
+      }
+
+      .theme-switch__spot:nth-of-type(2) {
+        width: 0.375em;
+        height: 0.375em;
+        top: 0.937em;
+        left: 1.375em;
+      }
+
+      .theme-switch__spot:nth-last-of-type(3) {
+        width: 0.25em;
+        height: 0.25em;
+        top: 0.312em;
+        left: 0.812em;
+      }
+
+      .theme-switch__clouds {
+        width: 1.25em;
+        height: 1.25em;
+        background-color: var(--clouds-color);
+        border-radius: var(--container-radius);
+        position: absolute;
+        bottom: -0.625em;
+        left: 0.312em;
+        -webkit-box-shadow: 0.937em 0.312em var(--clouds-color),
+          -0.312em -0.312em var(--back-clouds-color),
+          1.437em 0.375em var(--clouds-color),
+          0.5em -0.125em var(--back-clouds-color), 2.187em 0 var(--clouds-color),
+          1.25em -0.062em var(--back-clouds-color),
+          2.937em 0.312em var(--clouds-color),
+          2em -0.312em var(--back-clouds-color),
+          3.625em -0.062em var(--clouds-color),
+          2.625em 0em var(--back-clouds-color),
+          4.5em -0.312em var(--clouds-color),
+          3.375em -0.437em var(--back-clouds-color),
+          4.625em -1.75em 0 0.437em var(--clouds-color),
+          4em -0.625em var(--back-clouds-color),
+          4.125em -2.125em 0 0.437em var(--back-clouds-color);
+        box-shadow: 0.937em 0.312em var(--clouds-color),
+          -0.312em -0.312em var(--back-clouds-color),
+          1.437em 0.375em var(--clouds-color),
+          0.5em -0.125em var(--back-clouds-color), 2.187em 0 var(--clouds-color),
+          1.25em -0.062em var(--back-clouds-color),
+          2.937em 0.312em var(--clouds-color),
+          2em -0.312em var(--back-clouds-color),
+          3.625em -0.062em var(--clouds-color),
+          2.625em 0em var(--back-clouds-color),
+          4.5em -0.312em var(--clouds-color),
+          3.375em -0.437em var(--back-clouds-color),
+          4.625em -1.75em 0 0.437em var(--clouds-color),
+          4em -0.625em var(--back-clouds-color),
+          4.125em -2.125em 0 0.437em var(--back-clouds-color);
+        -webkit-transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
+        -o-transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
+        transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
+      }
+
+      .theme-switch__stars-container {
+        position: absolute;
+        color: var(--stars-color);
+        top: -100%;
+        left: 0.312em;
+        width: 2.75em;
+        height: auto;
+        -webkit-transition: var(--transition);
+        -o-transition: var(--transition);
+        transition: var(--transition);
+      }
+
+      /* actions */
+
+      .theme-switch__checkbox:checked + .theme-switch__container {
+        background-color: var(--container-night-bg);
+      }
+
+      .theme-switch__checkbox:checked
+        + .theme-switch__container
+        .theme-switch__circle-container {
+        left: calc(
+          100% - var(--circle-container-offset) -
+            var(--circle-container-diameter)
+        );
+      }
+
+      .theme-switch__checkbox:checked
+        + .theme-switch__container
+        .theme-switch__circle-container:hover {
+        left: calc(
+          100% - var(--circle-container-offset) -
+            var(--circle-container-diameter) - 0.187em
+        );
+      }
+
+      .theme-switch__circle-container:hover {
+        left: calc(var(--circle-container-offset) + 0.187em);
+      }
+
+      .theme-switch__checkbox:checked
+        + .theme-switch__container
+        .theme-switch__moon {
+        -webkit-transform: translate(0);
+        -ms-transform: translate(0);
+        transform: translate(0);
+      }
+
+      .theme-switch__checkbox:checked
+        + .theme-switch__container
+        .theme-switch__clouds {
+        bottom: -4.062em;
+      }
+
+      .theme-switch__checkbox:checked
+        + .theme-switch__container
+        .theme-switch__stars-container {
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+      li.flex-bullet::before {
+        content: "•";
+        color: #4b5563;
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-right: 0.5em;
+      }
+      .inline-input {
+        border: 1px solid transparent;
+        background: transparent;
+        outline: none;
+        border-radius: 0.375rem;
+        padding: 2px 6px;
+        transition: all 0.3s ease;
+        width: 100%;
+        display: inline-block;
+        color: inherit;
+      }
+
+      .inline-input:focus,
+      .inline-input:hover {
+        background-color: #eef2ff;
+        border-color: #6366f1; /* Indigo */
+      }
+
+      .inline-input:disabled {
+        border: none;
+        background: transparent;
+        padding: 0;
+        width: auto;
+      }
+
+      html.dark .inline-input:not(:disabled) {
+        background-color: #1e293b;
+        color: #f8fafc;
+        border: 1px solid transparent;
+      }
+
+      html.dark .inline-input:not(:disabled):focus,
+      html.dark .inline-input:not(:disabled):hover {
+        border-color: #4f46e5;
+      }
+
+      .clean-input {
+        border: 1px solid transparent;
+        background-color: transparent;
+        border-radius: 0.375rem;
+        padding: 4px 8px;
+        width: 100%;
+        transition: all 0.2s ease;
+      }
+      .clean-input:focus,
+      .clean-input:hover {
+        background-color: #eef2ff;
+        border-color: #6366f1;
+        outline: none;
+      }
+      .remove-btn {
+        cursor: pointer;
+        color: red;
+        font-weight: bold;
+        margin-left: 8px;
+      }
+      .theme-switch {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 50;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-indigo-50 to-white dark:from-gray-900 dark:to-black text-gray-900 dark:text-white min-h-screen flex items-center justify-center p-6 transition-colors duration-300"
+  >
+    <div id="particles-js" class="fixed top-0 left-0 w-full h-full -z-10"></div>
+
+    <div
+      class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 w-full max-w-3xl relative transition-colors duration-300"
+    >
+      <a
+        href="dashboard.html"
+        class="absolute top-4 left-4 text-indigo-600 dark:text-white bg-indigo-100 dark:bg-indigo-700 hover:text-white hover:bg-indigo-600 transition-all duration-300 ease-in-out transform hover:scale-105 px-3 py-1.5 rounded-full text-base shadow-sm flex items-center gap-1 z-10"
+        >← <span class="text-sm hidden sm:inline">Home</span></a
+      >
+      <button
+        id="edit-toggle"
+        class="absolute top-4 right-4 text-indigo-600 dark:text-white bg-indigo-100 dark:bg-indigo-700 hover:text-white hover:bg-indigo-600 transition-all duration-300 ease-in-out transform hover:scale-105 px-3 py-1.5 rounded-full text-base shadow-sm z-10"
+        title="Toggle Edit Mode"
+      >
+        ✏️
+      </button>
+      <div
+        id="toast"
+        class="hidden fixed top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50"
+      >
+        Saving...
       </div>
-    </div>
-
-    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Academic Info -->
-      <div class="bg-indigo-50 p-4 rounded-xl shadow-inner">
-        <h2 class="text-lg font-semibold text-gray-700 mb-2"><b>Academic Details</b></h2>
-        <ul class="text-gray-600 text-sm space-y-1">
-          <li><strong>Department:</strong> CSE</li>
-          <li><strong>Student ID:</strong> CSE270123</li>
-          <li><strong>Year:</strong> 2nd Year</li>
-          <li><strong>CGPA:</strong> 8.9</li>
-        </ul>
-      </div>
-
-      <!-- Skills & Projects -->
-      <div class="bg-indigo-50 p-4 rounded-xl shadow-inner">
-        <h2 class="text-lg font-semibold text-gray-700 mb-2"><b>Skills & Projects</b></h2>
-        <ul class="text-gray-600 text-sm space-y-1">
-          <li><strong>Skills:</strong> Python, React, TensorFlow</li>
-          <li><strong>Projects:</strong>
-            <ul class="list-disc list-inside ml-4">
-              <li>AI Chatbot using NLP</li>
-              <li>Portfolio Website</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Achievements -->
-    <div class="mt-6 bg-indigo-50 p-4 rounded-xl shadow-inner">
-      <h2 class="text-lg font-semibold text-gray-700 mb-2"><b>Achievements</b></h2>
-      <ul class="text-gray-600 text-sm list-disc list-inside">
-        <li>Top 5 in HackOverflow 2024</li>
-        <li>Completed AI Foundations by IBM</li>
-      </ul>
-    </div>
-
-    <!-- Connect Online Section -->
-    <div class="mt-6">
-      <h2 class="text-lg font-semibold text-gray-700 mb-2">🔗 Connect Online</h2>
-      <div class="space-y-4">
-        <div>
-          <label for="email" class="block text-gray-700">Email:</label>
-          <a href="mailto:aarohisharma@gmail.com" class="inline-block p-2 rounded-lg border border-gray-300 bg-indigo-50 text-primary hover:bg-primary hover:text-white transition">
-            aarohisharma@gmail.com
-          </a>
+      <div class="pt-14 mb-6">
+        <h1
+          class="text-3xl font-extrabold text-gray-800 dark:text-gray-100 capitalize"
+          id="name"
+        ></h1>
+        <p
+          id="user-type"
+          class="text-indigo-500 dark:text-indigo-300 font-medium mt-1"
+        ></p>
+        <div
+          class="mt-2 text-gray-600 dark:text-gray-300 text-sm flex gap-2 items-center"
+        >
+          <strong>Interests:</strong>
+          <div class="flex-1">
+            <input
+              id="interests"
+              class="inline-input w-full"
+              placeholder="Your interests..."
+              disabled
+            />
+          </div>
         </div>
-        <div class="flex space-x-4">
-          <a href="https://github.com/aarohisharma" target="_blank" class="flex items-center space-x-1 text-gray-600 hover:text-primary transition">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.01c-3.34.73-4.04-1.61-4.04-1.61-.54-1.37-1.32-1.73-1.32-1.73-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.06 1.83 2.78 1.3 3.45.99.11-.77.42-1.3.76-1.6-2.66-.3-5.47-1.34-5.47-5.96 0-1.32.47-2.4 1.23-3.25-.12-.3-.53-1.52.12-3.16 0 0 1-.32 3.3 1.24a11.5 11.5 0 016 0c2.3-1.56 3.3-1.24 3.3-1.24.65 1.64.24 2.86.12 3.16.77.85 1.23 1.93 1.23 3.25 0 4.63-2.81 5.66-5.49 5.96.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57A12 12 0 0012 0z"/></svg>
-            <span>GitHub</span>
-          </a>
-          <a href="https://linkedin.com/in/aarohisharma" target="_blank" class="flex items-center space-x-1 text-gray-600 hover:text-primary transition">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 2.12 6.1 1 7.48 1s2.5 1.12 2.5 2.5S8.86 6 7.48 6 4.98 4.88 4.98 3.5zM3 8h4.96v12H3V8zm7.16 0h4.76v1.69h.07c.66-1.24 2.29-2.54 4.71-2.54 5.04 0 5.97 3.32 5.97 7.63V20H20V14c0-1.43-.03-3.28-2.01-3.28-2.01 0-2.32 1.57-2.32 3.18V20H11V8z"/></svg>
-            <span>LinkedIn</span>
-          </a>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div
+          class="bg-indigo-50 dark:bg-gray-900 p-4 rounded-xl shadow-inner transition-colors duration-300"
+        >
+          <h2
+            class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2"
+          >
+            <b>Academic Details</b>
+          </h2>
+          <ul class="text-gray-600 dark:text-gray-300 text-sm space-y-2">
+            <li>
+              <strong>Department:</strong>
+              <input id="department" class="inline-input" disabled />
+            </li>
+            <li>
+              <strong>Student ID:</strong>
+              <input id="studentID" class="inline-input" disabled />
+            </li>
+            <li>
+              <strong>Year:</strong>
+              <input id="year" class="inline-input" disabled />
+            </li>
+            <li>
+              <strong>CGPA:</strong>
+              <input id="cgpa" class="inline-input" disabled />
+            </li>
+          </ul>
+        </div>
+        <div
+          class="bg-indigo-50 dark:bg-gray-900 p-4 rounded-xl shadow-inner transition-colors duration-300"
+        >
+          <h2
+            class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2"
+          >
+            <b>Skills</b>
+          </h2>
+          <ul
+            id="skills-list"
+            class="text-gray-600 dark:text-gray-300 text-sm space-y-1"
+          ></ul>
+          <div
+            class="hidden mt-2 w-full flex items-center gap-2"
+            id="skill-input-group"
+          >
+            <input
+              id="new-skill"
+              type="text"
+              placeholder="Add new skill"
+              class="clean-input"
+            />
+            <button
+              id="add-skill"
+              class="bg-indigo-500 text-white px-2 py-1 rounded hover:bg-indigo-600 transition"
+            >
+              Add
+            </button>
+          </div>
+          <h2
+            class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2 mt-6"
+          >
+            <b>Projects</b>
+          </h2>
+          <ul
+            id="projects-list"
+            class="text-gray-600 dark:text-gray-300 text-sm space-y-1"
+          ></ul>
+          <div
+            class="hidden mt-2 w-full flex items-center gap-2"
+            id="project-input-group"
+          >
+            <input
+              id="new-project"
+              type="text"
+              placeholder="Add new project"
+              class="clean-input"
+            />
+            <button
+              id="add-project"
+              class="bg-indigo-500 text-white px-2 py-1 rounded hover:bg-indigo-600 transition"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="mt-6 bg-indigo-50 dark:bg-gray-900 p-4 rounded-xl shadow-inner transition-colors duration-300"
+      >
+        <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+          <b>Achievements</b>
+        </h2>
+        <ul
+          id="achievements-list"
+          class="text-gray-600 dark:text-gray-300 text-sm space-y-1"
+        ></ul>
+        <div
+          class="hidden mt-2 w-full flex items-center gap-2"
+          id="achievement-input-group"
+        >
+          <input
+            id="new-achievement"
+            type="text"
+            placeholder="Add new achievement"
+            class="clean-input"
+          />
+          <button
+            id="add-achievement"
+            class="bg-indigo-500 text-white px-2 py-1 rounded hover:bg-indigo-600 transition"
+          >
+            Add
+          </button>
         </div>
       </div>
     </div>
+    <!-- Toggle Switch -->
+    <label class="theme-switch">
+      <input type="checkbox" class="theme-switch__checkbox" />
+      <div class="theme-switch__container">
+        <div class="theme-switch__clouds"></div>
+        <div class="theme-switch__stars-container">
+          <!-- Stars SVGs here -->
+        </div>
+        <div class="theme-switch__circle-container">
+          <div class="theme-switch__sun-moon-container">
+            <div class="theme-switch__moon">
+              <div class="theme-switch__spot"></div>
+              <div class="theme-switch__spot"></div>
+              <div class="theme-switch__spot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </label>
+    <script src="./firebase-config.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-  </div>
+        const editableInputs = [
+          "department",
+          "year",
+          "studentID",
+          "cgpa",
+          "interests",
+        ];
+        const toggleEditBtn = document.getElementById("edit-toggle");
+        let uid = null;
 
-</body>
+        auth.onAuthStateChanged((user) => {
+          if (!user) return (location.href = "login.html");
+          const urlParams = new URLSearchParams(window.location.search);
+          const profileUid = urlParams.get("uid") || user.uid;
+          uid = profileUid;
+          const isOwnProfile = profileUid === user.uid;
+          loadProfile(isOwnProfile);
+        });
+
+        function loadProfile(isOwn) {
+          db.collection("users")
+            .doc(uid)
+            .get()
+            .then((doc) => {
+              const data = doc.data() || {};
+              document.getElementById("name").textContent = data.name || "";
+              document.getElementById("user-type").textContent =
+                capitalizeFirst(data.userType || "");
+              document.getElementById("department").value =
+                data.academics?.department || "";
+              document.getElementById("year").value =
+                data.academics?.year || "";
+              document.getElementById("studentID").value =
+                data.academics?.studentID || "";
+              document.getElementById("cgpa").value =
+                data.academics?.cgpa || "";
+              document.getElementById("interests").value = data.interests || "";
+              (data.skills || []).forEach((val) =>
+                addItem("skills-list", val, isOwn)
+              );
+              (data.projects || []).forEach((val) =>
+                addItem("projects-list", val, isOwn)
+              );
+              (data.achievements || []).forEach((val) =>
+                addItem("achievements-list", val, isOwn)
+              );
+
+              if (!isOwn) {
+                toggleEditBtn.style.display = "none";
+                [
+                  "skill-input-group",
+                  "project-input-group",
+                  "achievement-input-group",
+                ].forEach((id) => document.getElementById(id)?.remove());
+                editableInputs.forEach((id) => {
+                  const input = document.getElementById(id);
+                  input.disabled = true;
+                });
+                document
+                  .querySelectorAll(".remove-btn")
+                  .forEach((btn) => btn.remove());
+              }
+            });
+        }
+
+        function capitalizeFirst(str) {
+          return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function addItem(listId, val, showDelete = true) {
+          const li = document.createElement("li");
+          li.className =
+            "flex flex-bullet justify-between items-center pr-2 text-sm text-gray-600";
+          li.innerHTML = `
+            <span class="break-words flex-grow">${capitalizeFirst(val)}</span>
+            ${showDelete ? '<span class="remove-btn">🗑️</span>' : ""}
+          `;
+          document.getElementById(listId).appendChild(li);
+        }
+
+        function autoSave() {
+          const academics = {
+            department: document.getElementById("department").value.trim(),
+            year: document.getElementById("year").value.trim(),
+            studentID: document.getElementById("studentID").value.trim(),
+            cgpa: document.getElementById("cgpa").value.trim(),
+          };
+          const interests = capitalizeFirst(
+            document.getElementById("interests").value.trim()
+          );
+          const skills = getCleanList("skills-list");
+          const projects = getCleanList("projects-list");
+          const achievements = getCleanList("achievements-list");
+          db.collection("users")
+            .doc(uid)
+            .update({ academics, skills, projects, achievements, interests });
+          showToast();
+        }
+
+        function getCleanList(id) {
+          return [...document.getElementById(id).children].map((li) =>
+            li.innerText.replace("🗑️", "").trim()
+          );
+        }
+
+        function showToast() {
+          const toast = document.getElementById("toast");
+          toast.classList.remove("hidden");
+          setTimeout(() => toast.classList.add("hidden"), 1500);
+        }
+
+        function debounce(func, delay) {
+          let timer;
+          return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(this, args), delay);
+          };
+        }
+
+        const debouncedSave = debounce(autoSave, 700);
+        editableInputs.forEach((id) => {
+          const el = document.getElementById(id);
+          el?.addEventListener("input", debouncedSave);
+        });
+
+        toggleEditBtn.onclick = () => {
+          const editing = toggleEditBtn.textContent === "✏️";
+          toggleEditBtn.textContent = editing ? "❌" : "✏️";
+          editableInputs.forEach((id) => {
+            const input = document.getElementById(id);
+            input.disabled = !editing;
+            input.classList.toggle("bg-indigo-100", editing);
+          });
+          document
+            .querySelectorAll(".remove-btn")
+            .forEach((btn) => btn.classList.toggle("hidden", !editing));
+          [
+            "skill-input-group",
+            "project-input-group",
+            "achievement-input-group",
+          ].forEach((id) =>
+            document.getElementById(id)?.classList.toggle("hidden", !editing)
+          );
+        };
+
+        document.getElementById("add-skill").onclick = () => {
+          const val = document.getElementById("new-skill").value.trim();
+          if (val) {
+            addItem("skills-list", val);
+            autoSave();
+          }
+          document.getElementById("new-skill").value = "";
+        };
+
+        document.getElementById("add-project").onclick = () => {
+          const val = document.getElementById("new-project").value.trim();
+          if (val) {
+            addItem("projects-list", val);
+            autoSave();
+          }
+          document.getElementById("new-project").value = "";
+        };
+
+        document.getElementById("add-achievement").onclick = () => {
+          const val = document.getElementById("new-achievement").value.trim();
+          if (val) {
+            addItem("achievements-list", val);
+            autoSave();
+          }
+          document.getElementById("new-achievement").value = "";
+        };
+
+        document.addEventListener("click", (e) => {
+          if (e.target.classList.contains("remove-btn")) {
+            e.target.parentElement.remove();
+            autoSave();
+          }
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const html = document.documentElement;
+        const toggleCheckbox = document.querySelector(
+          ".theme-switch__checkbox"
+        );
+
+        // Apply theme from localStorage
+        const savedTheme = localStorage.getItem("theme") || "light";
+        if (savedTheme === "dark") {
+          html.classList.add("dark");
+          toggleCheckbox.checked = true;
+        } else {
+          html.classList.remove("dark");
+          toggleCheckbox.checked = false;
+        }
+
+        // Toggle event
+        toggleCheckbox.addEventListener("change", () => {
+          const isDark = toggleCheckbox.checked;
+          html.classList.toggle("dark", isDark);
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        });
+      });
+    </script>
+    <script>
+      const lightConfig = {
+        particles: {
+          number: { value: 60 },
+          color: { value: "#6366f1" },
+          shape: { type: "circle" },
+          opacity: { value: 0.3 },
+          size: { value: 3 },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#6366f1",
+            opacity: 0.3,
+            width: 1,
+          },
+          move: { enable: true, speed: 2 },
+        },
+        interactivity: {
+          events: {
+            onhover: { enable: true, mode: "grab" },
+            onclick: { enable: true, mode: "push" },
+          },
+          modes: {
+            grab: { distance: 140, line_linked: { opacity: 0.3 } },
+            push: { particles_nb: 4 },
+          },
+        },
+        retina_detect: true,
+      };
+
+      const darkConfig = {
+        particles: {
+          number: { value: 60 },
+          color: { value: "#818cf8" },
+          shape: { type: "circle" },
+          opacity: { value: 0.2 },
+          size: { value: 3 },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#818cf8",
+            opacity: 0.2,
+            width: 1,
+          },
+          move: { enable: true, speed: 2 },
+        },
+        interactivity: {
+          events: {
+            onhover: { enable: true, mode: "grab" },
+            onclick: { enable: true, mode: "push" },
+          },
+          modes: {
+            grab: { distance: 140, line_linked: { opacity: 0.2 } },
+            push: { particles_nb: 4 },
+          },
+        },
+        retina_detect: true,
+      };
+
+      function loadParticles(theme) {
+        particlesJS(
+          "particles-js",
+          theme === "dark" ? darkConfig : lightConfig
+        );
+      }
+
+      // Load particles on DOM load
+      document.addEventListener("DOMContentLoaded", () => {
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem("theme") || "light";
+        loadParticles(savedTheme);
+
+        // Watch for toggle changes
+        const toggleCheckbox = document.querySelector(
+          ".theme-switch__checkbox"
+        );
+        toggleCheckbox.addEventListener("change", () => {
+          const newTheme = toggleCheckbox.checked ? "dark" : "light";
+          localStorage.setItem("theme", newTheme);
+
+          // Kill current canvas & reload particles
+          document.querySelector("#particles-js").innerHTML = "";
+          loadParticles(newTheme);
+        });
+      });
+    </script>
+  </body>
 </html>

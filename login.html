@@ -1,220 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AlmaTies - Login</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap');
-  
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-  
-    body {
-      background: url('alum.jpeg') no-repeat center center fixed;
-      background-size: cover;
-      height: 100vh;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-    }
-  
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 30px 60px;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      position: absolute;
-      width: 100%;
-      top: 0;
-      z-index: 10;
-    }
-  
-    .logo {
-      font-family: 'Pacifico', cursive;
-      font-size: 2rem;
-      color: #ec4899;
-      letter-spacing: 2px;
-    }
-  
-    .buttons button {
-      margin-left: 15px;
-      padding: 10px 20px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: none;
-      border-radius: 25px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
-      color: #333;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-  
-    .buttons button:hover {
-      background: #ec4899;
-      color: #fff;
-    }
-  
-    .main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      padding-top: 100px;
-    }
-  
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(6px);
-      z-index: 1;
-    }
-  
-    .auth-container {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-      background: rgba(255, 255, 255, 0.4);
-      padding: 50px;
-      border-radius: 20px;
-      backdrop-filter: blur(12px);
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-  
-    .auth-container h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 30px;
-    }
-  
-    .auth-container button[type="submit"] {
-  padding: 12px 30px;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 25px;
-  background: #ec4899;
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+<html lang="en" class="transition duration-500">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AlmaTies - Login</title>
 
-.auth-container button[type="submit"]:hover {
-  background: #db2777;
-}
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-    .form-group {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-  
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      color: #374151;
-    }
-  
-    .form-group input {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 30px;
-      border: none;
-      background: rgba(255, 255, 255, 0.15);
-      color: #111827;
-      font-size: 15px;
-      backdrop-filter: blur(5px);
-    }
-  
-    .form-group input::placeholder {
-      color: #6b7280;
-    }
-  
-    .cta {
-      padding: 12px 30px;
-      font-size: 1rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 25px;
-      background: #ec4899;
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-top: 20px;
-    }
-  
-    .cta:hover {
-      background: #db2777;
-    }
-  
-    .form-footer {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: #374151;
-    }
-  
-    .form-footer a {
-      color: #ec4899;
-      text-decoration: none;
-      font-weight: 600;
-    }
-  
-    .form-footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
-  
-</head>
-<body>
-  <header>
-    <h2 class="logo" onclick="window.location.href='index.html'">AlmaTies</h2>
-    <div class="buttons">
-      <button class="register" onclick="window.location.href='register.html'">REGISTER</button>
-      <button class="login" onclick="window.location.href='login.html'">LOGIN</button>
-    </div>
-  </header>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        transition: background 0.4s, color 0.4s;
+      }
+      .logo {
+        font-family: "Pacifico", cursive;
+      }
+      .transition-theme {
+        transition: background-color 0.4s, color 0.4s;
+      }
+    </style>
 
-  <div class="main">
-    <div class="overlay"></div>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script>
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          window.location.href = "dashboard.html";
+        }
+      });
+    </script>
+  </head>
 
-    <div class="auth-container">
-      <h2>Welcome Back</h2>
-      <form action="dashboard.html" onsubmit="return true;">
-        <div class="form-group">
-          <label for="login-email">Email Address</label>
-          <input type="email" id="login-email" required />
-        </div>
-        <div class="form-group">
-          <label for="login-password">Password</label>
-          <input type="password" id="login-password" required />
-        </div>
-        
-        <button type="submit" class="submit-btn" onclick="window.location.href='dashboard.html'; return false;">LOGIN</button>
-        <div class="form-footer">
-          <a href="#">Forgot Password?</a>
-        </div>
-        <div class="form-switch">
-          Don't have an account? <a href="register.html">Register Now</a>
-        </div>
-      </form>
-    </div>
-  </div>
-</body>
+  <body id="pageBody" class="min-h-screen transition-theme">
+    <!-- Header -->
+    <header
+      id="header"
+      class="flex justify-between items-center px-10 py-6 sticky top-0 z-50 rounded-b-xl transition-theme"
+    >
+      <h2
+        class="text-3xl logo tracking-wider cursor-pointer text-indigo-600"
+        onclick="window.location.href='index.html'"
+      >
+        AlmaTies
+      </h2>
+      <div class="space-x-4">
+        <button id="registerBtn" onclick="window.location.href='register.html'" class="theme-btn">Register</button>
+        <button id="homeBtn" onclick="window.location.href='index.html'" class="theme-btn">Home</button>
+      </div>
+    </header>
+
+    <!-- Main Form -->
+    <main class="flex-1 flex items-center justify-center p-6">
+      <div
+        id="loginCard"
+        class="w-full max-w-md backdrop-blur-md p-10 rounded-2xl shadow-2xl transition-theme"
+      >
+        <h2 class="text-3xl font-bold text-center mb-6">Welcome Back</h2>
+        <form id="login-form" class="space-y-5">
+          <div>
+            <label for="login-email" class="block text-sm mb-1">Email Address</label>
+            <input
+              type="email"
+              id="login-email"
+              placeholder="Enter your email"
+              required
+              class="w-full px-4 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          <div>
+            <label for="login-password" class="block text-sm mb-1">Password</label>
+            <input
+              type="password"
+              id="login-password"
+              placeholder="Enter your password"
+              required
+              class="w-full px-4 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          <div
+            id="error-message"
+            class="hidden bg-red-100 border border-red-400 text-red-700 text-sm text-center py-2 px-4 rounded-lg"
+          ></div>
+          <button
+            type="submit"
+            class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 rounded-full transition duration-300"
+          >
+            Login
+          </button>
+          <div class="text-sm text-center mt-4">
+            <a href="forgot-password.html" class="text-indigo-500 hover:underline">Forgot Password?</a>
+          </div>
+          <div class="text-sm text-center mt-2">
+            Don't have an account?
+            <a href="register.html" class="text-indigo-500 font-medium hover:underline">Register Now</a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Login Script -->
+    <script>
+      const auth = firebase.auth();
+      const errorDiv = document.getElementById("error-message");
+
+      document.getElementById("login-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+
+        auth.signInWithEmailAndPassword(email, password)
+          .then(() => {
+            errorDiv.classList.add("hidden");
+            window.location.href = "dashboard.html";
+          })
+          .catch((error) => {
+            let message = "";
+            if (error.code === "auth/invalid-login-credentials") {
+              message = "Invalid email or password.";
+            } else if (error.code === "auth/user-not-found") {
+              message = "No user found with this email.";
+            } else if (error.code === "auth/wrong-password") {
+              message = "Incorrect password. Please try again.";
+            } else {
+              message = error.message;
+            }
+
+            errorDiv.textContent = "❌ " + message;
+            errorDiv.classList.remove("hidden");
+          });
+      });
+    </script>
+
+    <!-- Auto Theme Apply Script (from localStorage) -->
+    <script>
+      const body = document.getElementById("pageBody");
+      const header = document.getElementById("header");
+      const loginCard = document.getElementById("loginCard");
+      const registerBtn = document.getElementById("registerBtn");
+      const homeBtn = document.getElementById("homeBtn");
+
+      function applyTheme(theme) {
+        const isDark = theme === "dark";
+
+        body.className = isDark
+          ? "min-h-screen bg-gradient-to-br from-gray-900 to-black text-white transition-theme"
+          : "min-h-screen bg-gradient-to-br from-white to-indigo-50 text-gray-800 transition-theme";
+
+        header.className =
+          "flex justify-between items-center px-10 py-6 sticky top-0 z-50 rounded-b-xl transition-theme " +
+          (isDark ? "bg-gray-800/80 text-white" : "bg-white/80 text-gray-800");
+
+        loginCard.className =
+          "w-full max-w-md p-10 rounded-2xl shadow-2xl transition-theme backdrop-blur-md " +
+          (isDark ? "bg-gray-800/90 text-white" : "bg-white/90 text-gray-800");
+
+        const btnClasses = isDark
+          ? "bg-black text-indigo-300 border border-indigo-500 hover:bg-indigo-500 hover:text-white font-medium px-5 py-2 rounded-full transition duration-300"
+          : "bg-white text-indigo-600 border border-indigo-500 hover:bg-indigo-500 hover:text-white font-medium px-5 py-2 rounded-full transition duration-300";
+
+        registerBtn.className = homeBtn.className = btnClasses;
+      }
+
+      const storedTheme = localStorage.getItem("theme") || "light";
+      applyTheme(storedTheme);
+    </script>
+  </body>
 </html>
